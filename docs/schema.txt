@@ -1,0 +1,4 @@
+### OBSOLETE ###
+
+This file is no longer used. All necessary schema information can be obtained
+directly from the source code, in /src/django/rainmap/core/models.py

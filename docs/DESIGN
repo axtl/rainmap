@@ -1,0 +1,13 @@
+- Django front-end for user interaction
+- PostgreSQL handles all persistent data related to the front end, user account information etc
+- Nginx forward proxy, serves static content then pushes to Apache for dynamic
+- When a scan is created, Celery dispatches to RabbitMQ
+- Nmap-worqr(s):
+    - consumes message with scan parameters from [singular] queue
+    - runs scan
+    - send message via shared exchange to Celery's response_q
+    - records scan completion, DB/Scan.path update
+
+To scale, we can add more exchanges/queues and split between 
+
+If we ever want to allow insanely-easy access for scanning, users can register their Jabber IDs and specify scan strings through IM (this is future++)

@@ -1,0 +1,261 @@
+#container {
+    line-height: 1.5em;
+    margin: 0.5em;
+    width: 35em;
+}
+
+#container h4 {
+    margin-top: 2em;
+    margin-bottom: 1em;
+}
+
+#container ol {
+    list-style: decimal outside;
+}
+
+#container ol li {
+    display: block;
+    margin-top: 1em;
+    padding-top: .5em;
+    padding-left: .5em;
+}
+
+#container iframe {
+    border: none;
+}
+
+#user-tools {
+    -moz-border-radius: .5em;
+	-webkit-border-radius: .5em;
+    background-color: #2A0D45;
+	clear: both;
+	text-align: center;
+	margin: 0;
+	padding: 0;
+}
+
+#user-tools ul li {
+    display: inline;
+    list-style: none;
+    font-size: large;
+    font-weight: bolder;
+    padding: .5em;
+}
+
+#user-tools a, #user-tools a:visited {
+    color: #F5F1F9;
+}
+
+#scanform input, #scanform select {
+    float: right;
+}
+
+#scanMeta input {
+	margin-top: .25em;
+	margin-left: 0;
+	display: block;
+    height: 1.5em;
+    font-size: larger;
+    width: 100%;
+}
+
+#scanMeta input, #scanform #submit {
+    float: none;
+}
+
+#scanform #submit {
+    margin-left: 3.7em;
+}
+
+#scanTargets {
+	margin-top: .5em;
+}
+
+#scanTargets textarea {
+	margin-left: 0;
+	margin-top: .25em;
+    height: 5em;
+    width: 100%;
+}
+
+#scanform {
+    width: 25em;
+}
+
+#scanform li {
+    list-style: none;
+}
+
+#scanform .single, #scanform .options {
+    padding-left: 1.5em;
+    margin-bottom: 1.5em;
+}
+
+#scanform .single {
+    background: url(/images/current-icon-16x16.png) no-repeat 0 4px;
+}
+
+#scanform .options {
+    background: url(/images/plus-icon-16x16.png) no-repeat 0 4px;
+}
+
+#scanform .options ul {
+    padding-left: 1em;
+}
+
+.collapsed {
+    display: none;
+}
+
+#form .fieldWrapper label {
+	float: left;
+    width: 10em;
+}
+
+#form .fieldWrapper {
+    margin-bottom: .5em;
+}
+
+#form .fieldWrapper:first-child {
+    margin-top: .5em;
+}
+
+#form #submit {
+    margin-left: 14.75em;
+}
+
+.input {
+    display: inline-block;
+    margin-top: 1.5em;
+    padding-left: 1px; /* match input element border */
+    margin-left: 10em;
+}
+
+.helptext {
+    display: none;
+}
+
+.messagelist {
+    display: block;
+    padding: 0;
+}
+
+.messagelist li {
+    padding: .25em;
+    padding-left: 2.5em;
+    list-style: none;
+}
+
+.messagelist li.info {
+    background-color: #b1ff79;
+}
+
+.messagelist li.error, .errorlist {
+    background-color: #fbff71;
+    color: #ff3200;
+}
+
+.errorlist {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    background-color: #fbff71;
+    color: #ff3200;
+    font-weight: bold;
+    margin-top: 1em;
+    padding: 0.25em;
+    padding-left: 1em;
+    list-style: none;
+    display: block;
+}
+
+.highlight {
+    background-color: #fbff71;
+}
+
+.scan-name {
+    font-weight: bold;
+    font-size: larger;
+    padding: .5em;
+    display: block;
+    background-color: #F5F1F9;
+    border: 1px solid #2A0D45;
+    -moz-border-radius: .5em;
+	-webkit-border-radius: .5em;
+	font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
+}
+
+.scan-name a, .scan-name a:visited {
+	display: block;
+}
+
+.result {
+	font-size: small;
+    padding: .25em;
+    padding-left: .5em;
+    display: block;
+    border: 1px solid #F5F1F9;
+    border-left: .25em solid #2A0D45;
+	font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
+	margin-top: 1em;
+}
+
+.result a, .result a:visited {
+    font-size: larger;
+}
+
+.result .scan-name {
+	padding: .25em;
+	padding-left: .25em;
+	padding-right: .25em;
+    display: inline;
+    background-color: #F5F1F9;
+    border: 0;
+    -moz-border-radius: .5em;
+	-webkit-border-radius: .5em;
+	font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
+}
+
+.ann {
+    padding-left: 1em;
+    font-size: smaller;
+    display: inline;
+}
+
+.del-ref {
+	float: right;
+	margin-top: 1px;
+	padding-right: .5em;
+}
+
+.scan-add {
+    display: block;
+    margin-top: 2em;
+    margin-bottom: 3em;
+}
+
+.scan-add a {
+	border: #2A0D45 1px solid;
+	font-size: large;
+    margin-left: 2.7em;
+    padding: .5em;
+    -webkit-border-radius: 10em;
+    -moz-border-radius: 10em;
+}
+
+.scan-add a, .scan-add a:hover, .scan-add a:visited {
+	font-weight: bold;
+	color: #2A0D45;
+    background-color: #f5f1f9;
+    font-variant: small-caps;
+}
+
+.attn, .attn:hover {
+    color: #ff3200;
+    background-color: #ffdede;
+}
+
+.pagination {
+    margin-top: 1.5em;
+    background-color: #f5f1f9;
+    text-align: center;
+}

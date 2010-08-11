@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans 'Invalid Activation Key!' %} | {{ block.super }}{% endblock %}
+
+{% block section_title %}
+    {% trans "Bad Activation Key!" %}
+{% endblock %}
+
+{%block content %}
+    <p>{% trans 'The key' %} <strong>{{ activation_key }}</strong> {% trans 'is not valid.' %}</p>
+{%endblock content %}

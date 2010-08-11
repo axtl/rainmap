@@ -1,0 +1,84 @@
+This document contains information on the steps necessary to install Rainmap.
+
+## INSTALLATION ##
+
+### Rainmap — The Web Front-end ###
+
+Rainmap is a Django project. If you have any prior experience with Django, you should be able to skip a number of steps below.
+
+Generally-speaking, you don't *need* to use any of the things below and can opt for alternatives. For example, if you want to use MySQL, that's possible. If you want to serve with `mod_python`, despite it being dead and buried (as a project), you can do that to.
+
+- install CentOS 5.x or higher (Rainmap was originally developed on 5.5)
+- add EPEL: https://fedoraproject.org/wiki/EPEL and install dependencies:
+
+    sudo yum install python-psycopg2 postgresql-server postgresql-python httpd mod_wsgi python-simplejson python-pip python-ctypes python-devel subversion rabbitmq-server supervisor
+
+- some Python dependencies should be installed via `pip`, as this will give you more up-to-date versions; for example, install via pip `django`, `django-registration`, `django-celery` and `IPy`
+    - Rainmap requires at least `django-registration` version 0.8; at the time of writing, `pip` only installs version 0.7, which will cause problems and prevent sign-ups
+- configure PostgreSQL with a `rainmapdba` user and `rainmap_db` database (Appendix A below has more instructions on that.)
+- configure RabbitMQ (for now, Rainmap with RabbitMQ has only been tested on a single machine cluster)
+- configure `supervisord` to be able to have django-celery automatically restart itself as needed; please refer to the sample files 'conf/supervisord.conf' and 'conf/celeryd.conf'
+- if you don't already have the Rainmap code, grab it via Subversion:
+
+    svn export --username=guest --pasword="" svn://svn.insecure.org/nmap-exp/rainmap/ rainmap
+
+- we suggest you create `/var/local/rainmap/` and move `rainmap/src/public` and `rainmap/src/django` in this location
+    - the `django/` folder contains the application logic
+    - the `public/` folder contains static files
+- if you need help configuring Apache, Appendix B has a sample configuration file.
+- enable `mod_wsgi` by editing `/etc/httpd/conf.d/mod_wsgi.conf`. More information:
+    - http://code.google.com/p/modwsgi/wiki/InstallationInstructions
+    - http://code.google.com/p/modwsgi/wiki/IntegrationWithDjango
+    - http://docs.djangoproject.com/en/dev/howto/deployment/modwsgi/
+- you'll need a `settings.py` in `/var/local/rainmap/django/rainmap/`; start from the `settings.example` file provided, and read the header comments for things to change (DATABASE, EMAIL and SECRET_KEY), then rename the file to `settings.py`
+- start the `postgresql` and `httpd` services
+- go to `/var/local/rainmap/django/rainmap/` and have Django create the required database tables:
+
+    ./manage.py syncdb
+
+Congratulations! You should now have a working installation of Rainmap!
+
+If you encounter any problems with this install guide, or want to submit patches, please use the nmap-dev mailing list at http://seclists.org/nmap-dev/
+
+
+## APPENDIX A: Configuring PostgreSQL ##
+
+These steps were taken for a new installation of PostgreSQL. If you already have an instance, you may skip some steps (and we're assuming you know enough about PostgreSQL not to need too much hand-holding.)
+
+- in "/etc/sysconfig/pgsql/postgresql" set "PGDATA=/var/lib/pgsql/data"
+- then execute:
+
+        sudo service postgresql start
+        su - postgres
+        psql -d template1 -U postgres
+
+From the SQL command line, change the PostgreSQL user `postgres`'s password:
+
+    ALTER USER postgres WITH PASSWORD '';
+    \q
+
+Modify `/var/lib/pgsql/data/pg_hba.conf` to require password authentication for local connections. Comment any existing lines at the end of the file, then append:
+
+    local all all password
+
+Create a user on the PostgreSQL server. The Rainmap config file expects the username to be `rainmapdba`:
+
+    createuser -P -s -e rainmapdba
+    Enter password for new role:
+    Enter it again:
+    CREATE ROLE rainmapdba PASSWORD 'secretpassword' SUPERUSER CREATEDB CREATEROLE INHERIT LOGIN;
+    CREATE ROLE
+
+Create the database. The Rainmap config expects its name to be `rainmap_db`:
+
+    createdb --encoding=UNICODE rainmap_db -O rainmapdba
+    CREATE DATABASE
+
+Then restart the PostgreSQL server:
+
+    sudo service postgresql restart
+
+
+## APPENDIX B: Apache configuration example ##
+
+Please refer to 'conf/rainmap.conf'

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans 'Log In' %} | {{ block.super }}{% endblock %}
+
+{% block section_title %}
+    {% trans "Glad to have you back!" %}
+{% endblock %}
+
+{% block content %}
+    <div id="login-form">
+        {% if user.is_authenticated %}
+            <p>{% trans "Hey! You're already logged in!" %}</p>
+        {% else %}
+            <p>{% trans "Please log in to access your dashboard:" %}</p>
+            {% include "form_snippet.html" %}
+            {% url auth_password_reset as reset_pass %}
+            {% if reset_pass %}
+                <a class="input" href="{{ reset_pass }}">{% trans "Forgot your password?" %}</a>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock content %}

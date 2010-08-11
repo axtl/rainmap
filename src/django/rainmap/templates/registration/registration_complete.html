@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans 'Registration Complete' %} | {{ block.super }}{% endblock %}
+
+{% block section_title %}
+    {% trans "Thanks for registering!" %}
+{% endblock %}
+
+{%block content %}
+    <p>{% trans "Check your email account for an activation link." %}</p>
+{%endblock content %}

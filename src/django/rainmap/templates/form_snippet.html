@@ -1,0 +1,21 @@
+{% load i18n %}
+<form action="{{ app_path }}" method="post" id="form" class="fancyform">{% csrf_token %}
+    {% if form.non_field_errors %}
+        {{ form.non_field_errors }}
+    {% endif %}
+    {% for field in form.visible_fields %}
+        <div class="fieldWrapper">
+
+            {# Include the hidden fields in the form #}
+            {% if forloop.first %}
+                {% for hidden in form.hidden_fields %}
+                    {{ hidden }}
+                {% endfor %}
+            {% endif %}
+
+            {{ field.errors }}
+            {{ field.label_tag }}{{ field }}
+        </div>
+    {% endfor %}
+    <input type="submit" value="{% trans 'Submit' %}" id="submit" />
+</form>

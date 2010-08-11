@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans 'My Scans' %} | {{ block.super }}{% endblock %}
+
+{% block section_title %}
+    {% trans "Your scans" %}
+{% endblock %}
+
+{% block content %}
+    <span class="scan-add"><a href={% url core_scan_new %}>{% trans "Add new" %}</a></span>
+    {% if scan_list %}
+        <ol>
+        {% for scan in scan_list.object_list %}
+            <li>
+                <span class="scan-name"><a href={% url core_scan_view scan.id %}>{{ scan.name }}</a></span>
+                <span class="ann"><a href={% url core_scan_run scan.id %}>{% trans "Run" %}</a></span>
+                <span class="ann"><a href={% url core_scan_edit scan.id %}>{% trans "Edit" %}</a></span>
+                <span class="ann"><a href={% url core_scan_copy scan.id %}>{% trans "Duplicate" %}</a></span>
+                <span class="ann del-ref"><a href={% url core_scan_delete scan.id %}>{% trans "Delete" %}</a></span>
+            </li>        
+        {% endfor %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if scan_list.has_previous %}
+                    <a href="?page={{ scan_list.previous_page_number }}">&laquo;&nbsp;{% trans "Previous" %}</a>
+                {% endif %}
+                <span class="current">
+                    {% trans "Page" %} {{ scan_list.number }} / {{ scan_list.paginator.num_pages }}
+                </span>
+                {% if scan_list.has_next %}
+                    <a href="?page={{ scan_list.next_page_number }}">{% trans "Next" %}&nbsp;&raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+        </ol>
+    {% else %}
+        <p>{% trans "No scans yet, why don't you add one?" %}</p>
+    {% endif %}
+{% endblock content %}

@@ -1,0 +1,23 @@
+{% load i18n %}
+{% blocktrans %}
+Your scan "{{ scan_name }}" has just completed, but there were some errors.
+{% endblocktrans %}
+
+{% if link %}
+    {% blocktrans %}
+Please look over the scan results to see what happened. If you believe the issue is on our end, please contact support. To see the scan results, please visit:
+
+{{ link }}
+
+Results are also accessible from your Dashboard.
+    {% endblocktrans %}
+{% else  %}
+{% trans "An administrator has been notified, and we're going to look into what went wrong. We apologize for any inconvenience." %}
+{% endif %}
+
+{% blocktrans %}
+To change your email options, visit your profile page at
+{{ profile_link }}
+
+Thanks!
+{% endblocktrans %}
