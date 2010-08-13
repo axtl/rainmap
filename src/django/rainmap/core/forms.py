@@ -130,11 +130,13 @@ class ScanForm(ModelForm):
         if entry.endswith("."):
             entry = entry[:-1]
         invalid = re.compile("[^a-z\d-]", re.IGNORECASE)
-        return all(
-            (label and len(label) <= 63
-             and not label.startswith("-") and not label.endswith("-")
-             and not invalid.search(label))
-            for label in entry.split("."))
+
+        for label in entry.split("."):
+            if (not label or len(label) > 63 or label.startswith("-")
+                or label.endswith("-") or invalid.search(label)):
+                return False
+
+        return True
 
     def _isIPRange(self, entry):
         '''Check if an IP range has been specified. No checking is made to see
