@@ -8,6 +8,7 @@ from rainmap.core.views import profile
 
 urlpatterns = patterns('',
     (r'^accounts/', include('registration.backends.default.urls')),
+    (r'^grappelli/', include('grappelli.urls')),
     (r'^admin/', include(admin.site.urls)),
     url(r'^profile/',
         profile,

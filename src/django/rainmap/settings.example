@@ -63,7 +63,11 @@ MEDIA_URL = '/'
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = '/media/'
+ADMIN_MEDIA_PREFIX = '/admin/'
+
+# Grappelli is the admin theme used by Rainmap
+GRAPPELLI_ADMIN_HEADLINE = "Rainmap Admin"
+GRAPPELLI_ADMIN_TITLE = "Rainmap Admin"
 
 ALLOWED_INCLUDE_ROOTS = MEDIA_ROOT
 
@@ -98,6 +102,7 @@ TEMPLATE_DIRS = (
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.messages.context_processors.messages',
     'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.request',
 )
 
 INSTALLED_APPS = (
@@ -106,6 +111,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.sites',
+    'grappelli',
     'django.contrib.admin',
     'djcelery',
     'registration',

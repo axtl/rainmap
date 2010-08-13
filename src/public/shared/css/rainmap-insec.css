@@ -46,6 +46,10 @@
     color: #F5F1F9;
 }
 
+.admin a, .admin a:visited {
+    text-transform: uppercase;
+}
+
 #scanform input, #scanform select {
     float: right;
 }

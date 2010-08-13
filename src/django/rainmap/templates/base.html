@@ -12,7 +12,10 @@
                     <div id="user-tools">
                         <ul>
                             {% if user.is_authenticated %}
-                                <li><a href="/">{% trans 'Dashboard' %}</a></li>
+                                {% if user.is_superuser %}
+                                    <li class="admin"><a href="/admin/">{% trans "Admin" %}</a></li>
+                                {% endif %}
+                                    <li><a href="/">{% trans 'Dashboard' %}</a></li>
                                 {% url user_profile as profile_url %}
                                 {% url auth_logout as logout_url %}
                                 {% url core_scan_list as scans_url %}
@@ -26,7 +29,7 @@
                                     <li><a href="{{ logout_url }}">{% trans 'Log Out' %}</a></li>
                                 {% endif %}
                             {% else %} {# not user.is_authenticated #}
-                                <li><a href="/">{% trans 'Start' %}</a></li>
+                                    <li><a href="/">{% trans 'Start' %}</a></li>
                                 {% url registration_register as register_url %}
                                 {% url auth_login as login_url %}
                                 {% if register_url %}
