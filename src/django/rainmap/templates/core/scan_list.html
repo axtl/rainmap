@@ -9,7 +9,7 @@
 
 {% block content %}
     <span class="scan-add"><a href={% url core_scan_new %}>{% trans "Add new" %}</a></span>
-    {% if scan_list %}
+    {% if scan_list.object_list.count > 0 %}
         <ol>
         {% for scan in scan_list.object_list %}
             <li>
