@@ -176,7 +176,7 @@
     background-color: #fbff71;
 }
 
-.scan-name {
+.name {
     font-weight: bold;
     font-size: larger;
     padding: .5em;
@@ -188,7 +188,7 @@
 	font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
 }
 
-.scan-name a, .scan-name a:visited {
+.name a, .name a:visited {
 	display: block;
 }
 
@@ -207,7 +207,7 @@
     font-size: larger;
 }
 
-.result .scan-name {
+.result .name {
 	padding: .25em;
 	padding-left: .25em;
 	padding-right: .25em;
@@ -231,13 +231,13 @@
 	padding-right: .5em;
 }
 
-.scan-add {
+.add {
     display: block;
     margin-top: 2em;
     margin-bottom: 3em;
 }
 
-.scan-add a {
+.add a {
 	border: #2A0D45 1px solid;
 	font-size: large;
     margin-left: 2.7em;
@@ -246,7 +246,7 @@
     -moz-border-radius: 10em;
 }
 
-.scan-add a, .scan-add a:hover, .scan-add a:visited {
+.add a, .add a:hover, .add a:visited {
 	font-weight: bold;
 	color: #2A0D45;
     background-color: #f5f1f9;

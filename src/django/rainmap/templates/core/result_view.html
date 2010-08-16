@@ -5,7 +5,7 @@
 
 {% block content %}
     <span class="backlink"><a href={{ referer }}>&laquo;&nbsp;{% trans "Back" %}</a></span>
-    <span class="result{% if not result.finished_ok %} attn{% endif %}"><a class="scan-name" href={% url core_scan_view result.for_scan.id %}>{{ result.for_scan.name }}</a> {% trans "finished about" %} <a href={% url core_result_view result.id %}>{{ result.run_on|timesince }}</a> {% trans "ago" %}</span>
+    <span class="result{% if not result.finished_ok %} attn{% endif %}"><a class="name" href={% url core_scan_view result.for_scan.id %}>{{ result.for_scan.name }}</a> {% trans "finished about" %} <a href={% url core_result_view result.id %}>{{ result.run_on|timesince }}</a> {% trans "ago" %}</span>
     <span class="ann"><a href={% url core_scan_run result.for_scan.id %}>{% trans "Rerun Scan" %}</a></span>
     <span class="ann"><a href="{% url core_result_view result.id %}?view=html" target="_blank">{% trans "Remove Frame" %}</a></span>
     <span class="ann"><a href="{% url core_result_view result.id %}?view=xml">{% trans "Download XML" %}</a></span>
