@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans 'Activation Complete!' %} | {{ block.super }}{% endblock %}
+
+{% block section_title %}
+    {% trans "Activated!" %}
+{% endblock %}
+
+{%block content %}
+    <p>{% trans "Your account is now active!" %}</p>
+    {% url auth_login as login_url %}
+    {% if login_url %}
+        {% trans "You may go ahead and" %} <a href="{{ login_url }}">{% trans 'log in' %}</a> {% trans "now." %}</p>
+    {% endif %}
+{%endblock content %}

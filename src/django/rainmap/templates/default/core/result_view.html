@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans 'Scan Result' %} | {{ block.super }}{% endblock %}
+
+{% block content %}
+    <div class="backlink"><a href={{ referer }}>&laquo;&nbsp;{% trans "Back" %}</a></div>
+    <span class="result{% if not result.finished_ok %} attn{% endif %}"><a class="name" href={% url core_scan_view result.for_scan.id %}>{{ result.for_scan.name }}</a> {% trans "finished about" %} <a class="res" href={% url core_result_view result.id %}>{{ result.run_on|timesince }}</a> {% trans "ago" %}</span>
+    <div class="actions">
+        <span class="ann"><a href={% url core_scan_run result.for_scan.id %}>{% trans "Rerun Scan" %}</a></span>
+        &nbsp;&bull;&nbsp;
+        <span class="ann"><a href="{% url core_result_view result.id %}?view=html" target="_blank">{% trans "Remove Frame" %}</a></span>
+        &nbsp;&bull;&nbsp;
+        <span class="ann"><a href="{% url core_result_view result.id %}?view=xml">{% trans "Download XML" %}</a></span>
+        <span class="ann del-ref"><a href={% url core_result_delete result.id %}>{% trans "Delete This Result" %}</a></span>
+    </div>
+
+    <iframe class="resframe" src={{ resloc }} width="100%" height="600" seamless>
+        <p>{% trans "Your browser doesn't have support for iframes, and we can't display the scan result." %}</p>
+    </iframe>
+
+{% endblock content %}

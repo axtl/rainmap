@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans 'Register' %} | {{ block.super }}{% endblock %}
+
+{% block section_title %}
+    {% trans "Need an account?" %}
+{% endblock %}
+
+{%block content %}
+    {% if user.is_authenticated %}
+        {% url auth_logout as logout_url %}
+        {% if logout_url %}
+            <p>{% trans "You'll need to" %} <a href="{{ logout_url }}">{% trans 'logout' %}</a> {% trans "first." %}</p>
+        {% else %}
+            <p>{% trans "You'll need to logout first." %}</p>
+        {% endif %}
+    {% else %}
+        <p>{% trans 'Great! We just need a few details to get you started:' %}</p>
+        {% include "form_snippet.html" %}
+    {% endif %}
+{%endblock content %}

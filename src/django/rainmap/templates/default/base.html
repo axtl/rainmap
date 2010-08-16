@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>{% load i18n %}
+        <title>{% block title %}{% trans 'Rainmap' %}{% endblock %}</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+        <link href="{% block stylesheet %}/css/base.css{% endblock %}" rel="stylesheet" media="all">
+    </head>
+    <body>
+        <!-- Container -->
+        <div id="container">
+            <!-- Header -->
+            <div id="header">
+                {% block userlinks %}
+                    <div id="user-tools">
+                        <ul>
+                            {% if user.is_authenticated %}
+                                {% if user.is_superuser %}
+                                    <li class="admin"><a href="/admin/">{% trans "Admin" %}</a></li>
+                                {% endif %}
+                                    <li><a href="/">{% trans 'Dashboard' %}</a></li>
+                                {% url user_profile as profile_url %}
+                                {% url auth_logout as logout_url %}
+                                {% url core_scan_list as scans_url %}
+                                {% if scans_url %}
+                                    <li><a href="{{ scans_url }}">{% trans 'Scans' %}</a></li>
+                                {% endif %}
+                                {% if profile_url %}
+                                    <li><a href="{{ profile_url }}">{% trans 'Profile' %}</a></li>
+                                {% endif %}
+                                {% if logout_url %}
+                                    <li><a href="{{ logout_url }}">{% trans 'Log Out' %}</a></li>
+                                {% endif %}
+                            {% else %} {# not user.is_authenticated #}
+                                    <li><a href="/">{% trans 'Start' %}</a></li>
+                                {% url registration_register as register_url %}
+                                {% url auth_login as login_url %}
+                                {% if register_url %}
+                                    <li><a href="{{ register_url }}">{% trans 'Sign Up' %}</a></li>
+                                {% endif %}
+                                {% if login_url %}
+                                    <li><a href="{{ login_url }}">{% trans 'Log In' %}</a></li>
+                                {% endif %}
+                            {% endif %}
+                        </ul>
+                    </div>
+                {% endblock userlinks %}
+            </div>
+            <!-- END Header -->
+            {% block nav %}{% endblock nav %}
+            
+            <!-- Content -->
+            <div id="content">
+                <div class="headline">{% block section_title %}{% endblock %}</div>
+                {% if messages %}
+                    <ul class="messagelist">
+                        {% for message in messages %}
+                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                {% block content %}
+                    {% block object_tools %}{% endblock %}
+                {% endblock content %}
+
+                <div id="sidebar">
+                    {% block sidebar %}
+                        <div id="greeting">{% block greeting %}{% endblock %}</div>
+                    {% endblock sidebar %}
+                </div>
+                <br class="clear" />
+            </div>
+            <!-- END Content -->
+            {% block footer %}{% endblock %}
+        </div>
+        <!-- END Container -->
+    </body>
+</html>

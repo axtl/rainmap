@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans 'Edit Scan' %} | {{ block.super }}{% endblock %}
+
+{% block section_title %}
+    {% trans "Edit scan profile" %}
+{% endblock %}
+
+{% block content %}
+    {% with scan_form as form %}
+        {% include "scan_form_snippet.html" %}
+    {% endwith %}
+{% endblock content %}

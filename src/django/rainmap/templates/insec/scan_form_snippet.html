@@ -1,0 +1,115 @@
+{% load i18n %}
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script type="text/javascript" src="/shared/js/scanform.js"></script>
+
+<form action="{{ app_path }}" method="post" id="scanform" class="fancyform">{% csrf_token %}
+    {% if form.non_field_errors %}
+        {{ form.non_field_errors }}
+    {% endif %}
+
+    <div id="scanOptions">
+        <ul>
+            {#  FORM META #}
+            <li id="scanMeta" class="fieldWrapper" title="{{ form.name.help_text }}">
+                {{ form.name.errors }}
+                {{ form.name.label_tag }}
+                {{ form.name }}
+            </li>
+            {#  TARGETS #}
+            <li id="scanTargets" class="fieldWrapper" title="{{ form.targets.help_text }}">
+                {{ form.targets.errors }}
+                {{ form.targets.label_tag }}<br />
+                {{ form.targets }}
+            </li>
+            <li><hr/><h4>{% trans "Here's what Nmap will do for each target:" %}</h4></li>
+            {#  HOST DISCOVERY #}
+            <li id="hostDiscovery" class="options"><strong class="links">{% trans "Check responsiveness" %}</strong>
+                <ul>
+                    <li class="fieldWrapper" title="{{ form.Pn.help_text }}">
+                        {{ form.Pn.errors }}
+                        {{ form.Pn.label_tag }} {{ form.Pn }}
+                    </li>
+                    <li class="fieldWrapper" title="{{ form.sn.help_text }}">
+                        {{ form.sn.errors }}
+                        {{ form.sn.label_tag }} {{ form.sn }}
+                    </li>
+                    <li class="fieldWrapper" title="{{ form.PS.help_text }}">
+                        {{ form.PS.errors }}
+                        {{ form.PS.label_tag }} {{ form.PS }}
+                    </li>
+                    <li class="fieldWrapper" title="{{ form.PA.help_text }}">
+                        {{ form.PA.errors }}
+                        {{ form.PA.label_tag }} {{ form.PA }}
+                    </li>
+                    <li class="fieldWrapper" title="{{ form.PU.help_text }}">
+                        {{ form.PU.errors }}
+                        {{ form.PU.label_tag }} {{ form.PU }}
+                    </li>
+                    <li class="fieldWrapper" title="{{ form.PY.help_text }}">
+                        {{ form.PY.errors }}
+                        {{ form.PY.label_tag }} {{ form.PY }}
+                    </li>
+                </ul>
+            </li>
+            {#  SCAN TECHNIQUES and PORT SPECIFICATION #}
+            <li id="scanTechniques" class="options"><strong class="links">{% trans "Look for open ports" %}</strong>
+                <ul>
+                    <li class="fieldWrapper" title="{{ form.sS.help_text }}">
+                        {{ form.sS.errors }}
+                        {{ form.sS.label_tag }} {{ form.sS }}
+                    </li>
+                    <li class="fieldWrapper" title="{{ form.sU.help_text }}">
+                        {{ form.sU.errors }}
+                        {{ form.sU.label_tag }} {{ form.sU }}
+                    </li>
+                    <li class="fieldWrapper" title="{{ form.p.help_text }}">
+                        {{ form.p.errors }}
+                        {{ form.p.label_tag }} {{ form.p }}
+                    </li>
+                    <li class="fieldWrapper" title="{{ form.F.help_text }}">
+                        {{ form.F.errors }}
+                        {{ form.F.label_tag }} {{ form.F }}
+                    </li>
+                    <li class="fieldWrapper" title="{{ form.top_ports.help_text }}">
+                        {{ form.top_ports.errors }}
+                        {{ form.top_ports.label_tag }} {{ form.top_ports }}
+                    </li>
+                </ul>
+            </li>
+            {#  OS DETECTION #}
+            <li id="osDetection" class="single">
+                {{ form.O.errors }}
+                {{ form.O.label_tag }} {{ form.O }}
+            </li>
+            {#  SERVICE / VERSION DETECTION #}
+            <li id="serviceDetection" class="single" title="{{ form.sV.help_text }}">
+                {{ form.sV.errors }}
+                {{ form.sV.label_tag }} {{ form.sV }}
+            </li>
+            {#  SRIPT SCAN #}
+            <li id="scriptScan" class="single" title="{{ form.sC.help_text }}">
+                {{ form.sC.errors }}
+                {{ form.sC.label_tag }} {{ form.sC }}
+            </li>
+            {# EXTRAS #}
+            <li id="scanExtras" class="options"><strong class="links">{% trans "Extras" %}</strong>
+                <ul>
+                    <li class="fieldWrapper" title="{{ form.traceroute.help_text }}">
+                        {{ form.traceroute.errors }}
+                        {{ form.traceroute.label_tag }} {{ form.traceroute }}
+                    </li>
+                    <li class="fieldWrapper" title="{{ form.T.help_text }}">
+                        {{ form.T.errors }}
+                        {{ form.T.label_tag }} {{ form.T }}
+                    </li>
+                    <li class="fieldWrapper" title="{{ form.value.help_text }}">
+                        {{ form.v.errors }}
+                        {{ form.v.label_tag }} {{ form.v }}
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <input type="submit" value="{% trans 'Save' %}" id="submit" />
+    {% trans "or" %} <a href={% url core_scan_list %}>{% trans "Cancel" %}</a>
+</form>

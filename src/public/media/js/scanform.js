@@ -14,13 +14,9 @@ $(document).ready(function() {
     $(".options").toggle(
         function() {
             $(this).children("ul").slideDown("medium");
-            $(this).css("background", 
-                "url(/images/minus-icon-16x16.png) no-repeat 0 4px");
         },
         function() {
             $(this).children("ul").slideUp("fast");
-            $(this).css("background", 
-                "url(/images/plus-icon-16x16.png) no-repeat 0 4px");
         });
     // clicks inside the options list shouldn't close the container
     $(".options > ul").click(function(event) {

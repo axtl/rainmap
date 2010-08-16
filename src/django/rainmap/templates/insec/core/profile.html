@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans 'My Profile' %} | {{ block.super }}{% endblock %}
+
+{% block section_title %}
+    {% trans "Profile and Settings" %}
+{% endblock %}
+
+{% block content %}
+    <div id="cr_info">{% trans 'You have'%} <span class="highlight">{{ profile.cr_rem }}</span> {% trans 'credits remaining.'%}</div>
+    <div class="body">{% spaceless %}
+        {% url auth_password_change as password_change_url %}
+        {% if password_change_url %}
+            {% trans 'Want to' %} <a href="{{ password_change_url }}">{% trans 'change your password?' %}</a>
+        {% endif %}
+    </div>{% endspaceless %}
+    
+    {% with profile_form as form %}
+        {% include "form_snippet.html" %}
+    {% endwith %}
+{% endblock content %}

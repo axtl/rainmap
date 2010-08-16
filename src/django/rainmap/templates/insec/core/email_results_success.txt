@@ -1,0 +1,14 @@
+{% load i18n %}
+{% blocktrans %}
+Your scan "{{ scan_name }}" has just completed, and we thought you'd like to know. To see the scan results, please visit:
+
+{{ link }}
+
+Results are also accessible from your Dashboard.
+
+
+To change your email options, visit your profile page at
+{{ profile_link }}
+
+Thanks!
+{% endblocktrans %}

@@ -1,0 +1,10 @@
+{% load i18n %}
+{% blocktrans %}
+    Thanks for registering for an account with Rainmap!
+
+    You have {{ expiration_days }} days to activate this account. You can do so by clicking on the link below:
+
+        http://{{ site }}/accounts/activate/{{ activation_key }}
+
+    See you around!
+{% endblocktrans %}
