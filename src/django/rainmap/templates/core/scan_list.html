@@ -8,20 +8,16 @@
 {% endblock %}
 
 {% block content %}
-    <span class="add"><a href={% url core_scan_new %}>{% trans "Add new" %}</a></span>
+    <span class="scan-add"><a href={% url core_scan_new %}>{% trans "Add new" %}</a></span>
     {% if scan_list.object_list.count > 0 %}
         <ol>
         {% for scan in scan_list.object_list %}
             <li>
-                <span class="name"><a href={% url core_scan_view scan.id %}>{{ scan.name }}</a></span>
-                <div class="actions">
-                    <span class="ann"><a href={% url core_scan_run scan.id %}>{% trans "Run" %}</a></span>
-                    &nbsp;&bull;&nbsp;
-                    <span class="ann"><a href={% url core_scan_edit scan.id %}>{% trans "Edit" %}</a></span>
-                    &nbsp;&bull;&nbsp;
-                    <span class="ann"><a href={% url core_scan_copy scan.id %}>{% trans "Duplicate" %}</a></span>
-                    <span class="ann del-ref"><a href={% url core_scan_delete scan.id %}>{% trans "Delete" %}</a></span>
-                </div>
+                <span class="scan-name"><a href={% url core_scan_view scan.id %}>{{ scan.name }}</a></span>
+                <span class="ann"><a href={% url core_scan_run scan.id %}>{% trans "Run" %}</a></span>
+                <span class="ann"><a href={% url core_scan_edit scan.id %}>{% trans "Edit" %}</a></span>
+                <span class="ann"><a href={% url core_scan_copy scan.id %}>{% trans "Duplicate" %}</a></span>
+                <span class="ann del-ref"><a href={% url core_scan_delete scan.id %}>{% trans "Delete" %}</a></span>
             </li>        
         {% endfor %}
         </ol>

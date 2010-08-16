@@ -2,13 +2,11 @@
 <html>
     <head>{% load i18n %}
         <title>{% block title %}{% trans 'Rainmap' %}{% endblock %}</title>
-        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
-        <link href="{% block stylesheet %}/css/base.css{% endblock %}" rel="stylesheet" media="all">
-    </head>
-    <body>
-        <!-- Container -->
+
+        <link href="{% block stylesheet %}/shared/css/rainmap-insec.css{% endblock %}" rel="stylesheet" media="all">
+        {% ssi /var/local/rainmap/public/shared/templates/standard_body_top.html %}
+
         <div id="container">
-            <!-- Header -->
             <div id="header">
                 {% block userlinks %}
                     <div id="user-tools">
@@ -47,19 +45,18 @@
             </div>
             <!-- END Header -->
             {% block nav %}{% endblock nav %}
-            
+            {% if messages %}
+                <ul class="messagelist">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <h3>{% block section_title %}{% endblock %}</h3>
+            {% endif %}
+
             <!-- Content -->
             <div id="content">
-                {% if messages %}
-                    <ul class="messagelist">
-                        {% for message in messages %}
-                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <h3>{% block section_title %}{% endblock %}</h3>
-                {% endif %}
-
                 {% block content %}
                     {% block object_tools %}{% endblock %}
                 {% endblock content %}
@@ -75,5 +72,5 @@
             {% block footer %}{% endblock %}
         </div>
         <!-- END Container -->
-    </body>
-</html>
+        {# temp disable footer, too many Analytics et al loading #}
+        {# {% ssi /var/local/rainmap/public/shared/templates/standard_body_bottom.html %} #}

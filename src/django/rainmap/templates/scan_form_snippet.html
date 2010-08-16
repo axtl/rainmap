@@ -10,69 +10,82 @@
     <div id="scanOptions">
         <ul>
             {#  FORM META #}
-            <li id="scanMeta" class="fieldWrapper" title="{{ form.name.help_text }}">
+            <li id="scanMeta" class="fieldWrapper">
                 {{ form.name.errors }}
                 {{ form.name.label_tag }}
                 {{ form.name }}
+                <span class="helptext">{{ form.name.help_text }}</span>
             </li>
             {#  TARGETS #}
-            <li id="scanTargets" class="fieldWrapper" title="{{ form.targets.help_text }}">
+            <li id="scanTargets" class="fieldWrapper">
                 {{ form.targets.errors }}
                 {{ form.targets.label_tag }}<br />
                 {{ form.targets }}
+                <span class="helptext">{{ form.targets.help_text|safe }}</span>
             </li>
             <li><hr/><h4>{% trans "Here's what Nmap will do for each target:" %}</h4></li>
             {#  HOST DISCOVERY #}
             <li id="hostDiscovery" class="options">{% trans "Check responsiveness" %}
                 <ul>
-                    <li class="fieldWrapper" title="{{ form.Pn.help_text }}">
+                    <li class="fieldWrapper">
                         {{ form.Pn.errors }}
                         {{ form.Pn.label_tag }} {{ form.Pn }}
+                        <span class="helptext">{{ form.Pn.help_text }}</span>
                     </li>
-                    <li class="fieldWrapper" title="{{ form.sn.help_text }}">
+                    <li class="fieldWrapper">
                         {{ form.sn.errors }}
                         {{ form.sn.label_tag }} {{ form.sn }}
+                        <span class="helptext">{{ form.sn.help_text }}</span>
                     </li>
-                    <li class="fieldWrapper" title="{{ form.PS.help_text }}">
+                    <li class="fieldWrapper">
                         {{ form.PS.errors }}
                         {{ form.PS.label_tag }} {{ form.PS }}
+                        <span class="helptext">{{ form.PS.help_text }}</span>
                     </li>
-                    <li class="fieldWrapper" title="{{ form.PA.help_text }}">
+                    <li class="fieldWrapper">
                         {{ form.PA.errors }}
                         {{ form.PA.label_tag }} {{ form.PA }}
+                        <span class="helptext">{{ form.PA.help_text }}</span>
                     </li>
-                    <li class="fieldWrapper" title="{{ form.PU.help_text }}">
+                    <li class="fieldWrapper">
                         {{ form.PU.errors }}
                         {{ form.PU.label_tag }} {{ form.PU }}
+                        <span class="helptext">{{ form.PU.help_text }}</span>
                     </li>
-                    <li class="fieldWrapper" title="{{ form.PY.help_text }}">
+                    <li class="fieldWrapper">
                         {{ form.PY.errors }}
                         {{ form.PY.label_tag }} {{ form.PY }}
+                        <span class="helptext">{{ form.PY.help_text }}</span>
                     </li>
                 </ul>
             </li>
             {#  SCAN TECHNIQUES and PORT SPECIFICATION #}
             <li id="scanTechniques" class="options">{% trans "Look for open ports" %}
                 <ul>
-                    <li class="fieldWrapper" title="{{ form.sS.help_text }}">
+                    <li class="fieldWrapper">
                         {{ form.sS.errors }}
                         {{ form.sS.label_tag }} {{ form.sS }}
+                        <span class="helptext">{{ form.sS.help_text }}</span>
                     </li>
-                    <li class="fieldWrapper" title="{{ form.sU.help_text }}">
+                    <li class="fieldWrapper">
                         {{ form.sU.errors }}
                         {{ form.sU.label_tag }} {{ form.sU }}
+                        <span class="helptext">{{ form.sU.help_text }}</span>
                     </li>
-                    <li class="fieldWrapper" title="{{ form.p.help_text }}">
+                    <li class="fieldWrapper">
                         {{ form.p.errors }}
                         {{ form.p.label_tag }} {{ form.p }}
+                        <span class="helptext">{{ form.p.help_text }}</span>
                     </li>
-                    <li class="fieldWrapper" title="{{ form.F.help_text }}">
+                    <li class="fieldWrapper">
                         {{ form.F.errors }}
                         {{ form.F.label_tag }} {{ form.F }}
+                        <span class="helptext">{{ form.F.help_text }}</span>
                     </li>
-                    <li class="fieldWrapper" title="{{ form.top_ports.help_text }}">
+                    <li class="fieldWrapper">
                         {{ form.top_ports.errors }}
                         {{ form.top_ports.label_tag }} {{ form.top_ports }}
+                        <span class="helptext">{{ form.top_ports.help_text }}</span>
                     </li>
                 </ul>
             </li>
@@ -82,29 +95,34 @@
                 {{ form.O.label_tag }} {{ form.O }}
             </li>
             {#  SERVICE / VERSION DETECTION #}
-            <li id="serviceDetection" class="single" title="{{ form.sV.help_text }}">
+            <li id="serviceDetection" class="single">
                 {{ form.sV.errors }}
                 {{ form.sV.label_tag }} {{ form.sV }}
+                <span class="helptext">{{ form.sV.help_text }}</span>
             </li>
             {#  SRIPT SCAN #}
-            <li id="scriptScan" class="single" title="{{ form.sC.help_text }}">
+            <li id="scriptScan" class="single">
                 {{ form.sC.errors }}
                 {{ form.sC.label_tag }} {{ form.sC }}
+                <span class="helptext">{{ form.sC.help_text }}</span>
             </li>
             {# EXTRAS #}
             <li id="scanExtras" class="options">{% trans "Extras" %}
                 <ul>
-                    <li class="fieldWrapper" title="{{ form.traceroute.help_text }}">
+                    <li class="fieldWrapper">
                         {{ form.traceroute.errors }}
                         {{ form.traceroute.label_tag }} {{ form.traceroute }}
+                        <span class="helptext">{{ form.traceroute.help_text }}</span>
                     </li>
-                    <li class="fieldWrapper" title="{{ form.T.help_text }}">
+                    <li class="fieldWrapper">
                         {{ form.T.errors }}
                         {{ form.T.label_tag }} {{ form.T }}
+                        <span class="helptext">{{ form.T.help_text }}</span>
                     </li>
-                    <li class="fieldWrapper" title="{{ form.value.help_text }}">
+                    <li class="fieldWrapper">
                         {{ form.v.errors }}
                         {{ form.v.label_tag }} {{ form.v }}
+                        <span class="helptext">{{ form.value.help_text }}</span>
                     </li>
                 </ul>
             </li>

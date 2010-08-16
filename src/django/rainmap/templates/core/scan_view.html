@@ -4,15 +4,11 @@
 {% block title %}{% trans 'Scan Details' %} | {{ block.super }}{% endblock %}
 
 {% block content %}
-    <span class="name"><a href="#">{{ scan.name }}</a></span>
-    <div class="actions">
-        <span class="ann"><a href={% url core_scan_run scan.id %}>{% trans "Run" %}</a></span>
-        &nbsp;&bull;&nbsp;
-        <span class="ann"><a href={% url core_scan_edit scan.id %}>{% trans "Edit" %}</a></span>
-        &nbsp;&bull;&nbsp;
-        <span class="ann"><a href={% url core_scan_copy scan.id %}>{% trans "Duplicate" %}</a></span>
-        <span class="ann del-ref"><a href={% url core_scan_delete scan.id %}>{% trans "Delete" %}</a></span>
-    </div>
+    <span class="scan-name">{{ scan.name }}</span>
+    <span class="ann"><a href={% url core_scan_run scan.id %}>{% trans "Run" %}</a></span>
+    <span class="ann"><a href={% url core_scan_edit scan.id %}>{% trans "Edit" %}</a></span>
+    <span class="ann"><a href={% url core_scan_copy scan.id %}>{% trans "Duplicate" %}</a></span>
+    <span class="ann del-ref"><a href={% url core_scan_delete scan.id %}>{% trans "Delete" %}</a></span>
     <h4>{% trans "Command:" %}</h4>
     <pre class="screen"><code class="command"> nmap {{ scan.command }} {{ scan.targets }} </code></pre>
     {% if result_list.object_list.count > 0 %}
