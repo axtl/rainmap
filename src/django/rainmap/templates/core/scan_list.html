@@ -20,6 +20,7 @@
                 <span class="ann del-ref"><a href={% url core_scan_delete scan.id %}>{% trans "Delete" %}</a></span>
             </li>        
         {% endfor %}
+        </ol>
         <div class="pagination">
             <span class="step-links">
                 {% if scan_list.has_previous %}
@@ -33,7 +34,6 @@
                 {% endif %}
             </span>
         </div>
-        </ol>
     {% else %}
         <p>{% trans "No scans yet, why don't you add one?" %}</p>
     {% endif %}

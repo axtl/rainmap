@@ -19,19 +19,19 @@
                     <span class="result{% if not result.finished_ok %} attn{% endif %}"><a href={% url core_result_view result.id %}>{{ result.run_on|timesince }}</a><span class="ann del-ref"><a href={% url core_result_delete result.id %}>{% trans "Delete" %}</a></span></span>
                 </li>
             {% endfor %}
-            <div class="pagination">
-                <span class="step-links">
-                    {% if result_list.has_previous %}
-                        <a href="?page={{ result_list.previous_page_number }}">&laquo;&nbsp;{% trans "Previous" %}</a>
-                    {% endif %}
-                    <span class="current">
-                        {% trans "Page" %} {{ result_list.number }} / {{ result_list.paginator.num_pages }}
-                    </span>
-                    {% if result_list.has_next %}
-                        <a href="?page={{ result_list.next_page_number }}">{% trans "Next" %}&nbsp;&raquo;</a>
-                    {% endif %}
-                </span>
-            </div>
         </ol>
+        <div class="pagination">
+            <span class="step-links">
+                {% if result_list.has_previous %}
+                    <a href="?page={{ result_list.previous_page_number }}">&laquo;&nbsp;{% trans "Previous" %}</a>
+                {% endif %}
+                <span class="current">
+                    {% trans "Page" %} {{ result_list.number }} / {{ result_list.paginator.num_pages }}
+                </span>
+                {% if result_list.has_next %}
+                    <a href="?page={{ result_list.next_page_number }}">{% trans "Next" %}&nbsp;&raquo;</a>
+                {% endif %}
+            </span>
+        </div>
     {% endif %}
 {% endblock content %}

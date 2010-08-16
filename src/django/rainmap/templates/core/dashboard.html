@@ -18,20 +18,20 @@
                     <span class="ann del-ref"><a href={% url core_result_delete result.id %}>{% trans "Delete Result" %}</a></span>
                 </li>
             {% endfor %}
-            <div class="pagination">
-                <span class="step-links">
-                    {% if result_list.has_previous %}
-                        <a href="?page={{ result_list.previous_page_number }}">&laquo;&nbsp;{% trans "Previous" %}</a>
-                    {% endif %}
-                    <span class="current">
-                        {% trans "Page" %} {{ result_list.number }} / {{ result_list.paginator.num_pages }}
-                    </span>
-                    {% if result_list.has_next %}
-                        <a href="?page={{ result_list.next_page_number }}">{% trans "Next" %}&nbsp;&raquo;</a>
-                    {% endif %}
-                </span>
-            </div>
         </ol>
+        <div class="pagination">
+            <span class="step-links">
+                {% if result_list.has_previous %}
+                    <a href="?page={{ result_list.previous_page_number }}">&laquo;&nbsp;{% trans "Previous" %}</a>
+                {% endif %}
+                <span class="current">
+                    {% trans "Page" %} {{ result_list.number }} / {{ result_list.paginator.num_pages }}
+                </span>
+                {% if result_list.has_next %}
+                    <a href="?page={{ result_list.next_page_number }}">{% trans "Next" %}&nbsp;&raquo;</a>
+                {% endif %}
+            </span>
+        </div>
     {% else %}
         <p>{% trans "There hasn't been any recent activity." %}</p>
         {% url core_scan_new as new_scan_url %}
