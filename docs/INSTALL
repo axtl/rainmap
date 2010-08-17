@@ -13,7 +13,7 @@ Generally-speaking, you don't *need* to use any of the things below and can opt 
 
     sudo yum install python-psycopg2 postgresql-server postgresql-python httpd mod_wsgi python-simplejson python-pip python-ctypes python-devel subversion rabbitmq-server supervisor
 
-- some Python dependencies should be installed via `pip`, as this will give you more up-to-date versions; for example, install via pip `django`, `django-registration`, `django-celery` and `IPy`
+- some Python dependencies should be installed via `pip`, as this will give you more up-to-date versions; for example, install via pip `django`, `django-registration` and `django-celery`
     - Rainmap requires at least `django-registration` version 0.8; at the time of writing, `pip` only installs version 0.7, which will cause problems and prevent sign-ups
 - configure PostgreSQL with a `rainmapdba` user and `rainmap_db` database (Appendix A below has more instructions on that.)
 - configure RabbitMQ (for now, Rainmap with RabbitMQ has only been tested on a single machine cluster)

@@ -291,6 +291,15 @@ body {
   background-color: #cd1010;
   color: #6e6e6e;
 }
+#content .errorlist {
+  margin: 0;
+  margin-top: 0.5em;
+  padding: 0;
+  font-size: 1em;
+  font-weight: normal;
+  color: #cd1010;
+  display: block;
+}
 #content .resframe { margin-top: 1em; }
 #content .backlink { margin-bottom: 1em; }
 #content .pagination {
@@ -355,10 +364,50 @@ form #scanMeta {
   font-size: large;
   line-height: 1.5em;
 }
+form #scanMeta label {
+  float: none;
+  display: block;
+}
+form #scanMeta .errorlist {
+  margin: 0;
+  margin-top: 0.5em;
+  padding: 0;
+  font-size: 1em;
+  font-weight: normal;
+  color: #cd1010;
+  display: block;
+  background-color: none;
+  border: 1px solid #6e6e6e;
+  border-bottom: none;
+  float: left;
+  display: inline-block;
+  padding-left: 0.25em;
+  padding-right: 0.25em;
+}
 form #scanTargets {
   font-weight: bolder;
   font-size: large;
   line-height: 1.5em;
+}
+form #scanTargets label {
+  float: none;
+  display: block;
+}
+form #scanTargets .errorlist {
+  margin: 0;
+  margin-top: 0.5em;
+  padding: 0;
+  font-size: 1em;
+  font-weight: normal;
+  color: #cd1010;
+  display: block;
+  background-color: none;
+  border: 1px solid #6e6e6e;
+  border-bottom: none;
+  float: left;
+  display: inline-block;
+  padding-left: 0.25em;
+  padding-right: 0.25em;
 }
 form #scanMeta input {
   font-size: large;

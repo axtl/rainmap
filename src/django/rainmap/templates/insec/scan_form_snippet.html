@@ -11,14 +11,14 @@
         <ul>
             {#  FORM META #}
             <li id="scanMeta" class="fieldWrapper" title="{{ form.name.help_text }}">
-                {{ form.name.errors }}
                 {{ form.name.label_tag }}
+                {{ form.name.errors }}
                 {{ form.name }}
             </li>
             {#  TARGETS #}
             <li id="scanTargets" class="fieldWrapper" title="{{ form.targets.help_text }}">
+                {{ form.targets.label_tag }}
                 {{ form.targets.errors }}
-                {{ form.targets.label_tag }}<br />
                 {{ form.targets }}
             </li>
             <li><hr/><h4>{% trans "Here's what Nmap will do for each target:" %}</h4></li>

@@ -53,7 +53,7 @@ OUTPUT_URL = "/storage/"
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = "/var/local/rainmap/public/media/"
+MEDIA_ROOT = "/var/local/rainmap/public/"
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -92,7 +92,7 @@ ROOT_URLCONF = 'rainmap.urls'
 TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(PROJECT_DIR, "templates/default"),
+    os.path.join(PROJECT_DIR, "templates/insec"),
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (

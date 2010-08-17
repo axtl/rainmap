@@ -71,8 +71,13 @@
     margin-left: 3.7em;
 }
 
-#scanTargets {
+#scanTargets, #scanMeta {
 	margin-top: .5em;
+	font-weight: bolder;
+}
+
+#scanTargets .errorlist, #scanMeta .errorlist {
+    margin-top: 0;
 }
 
 #scanTargets textarea {

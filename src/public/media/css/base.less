@@ -259,6 +259,15 @@ body {
             color: @subtle;
         }
     }
+    .errorlist {
+        margin: 0;
+        margin-top: @spacer / 2;
+        padding: 0;
+        font-size: @text;
+        font-weight: normal;
+        color: @contrast;
+        display: block;
+    }
     .resframe {
         margin-top: @spacer;
     }
@@ -302,6 +311,20 @@ form {
         font-weight: bolder;
         font-size: large;
         line-height: @text * 1.5;
+        label {
+            float: none;
+            display: block;
+        }
+        .errorlist {
+            #content > .errorlist;
+            background-color: none;
+            border: 1px solid @subtle;
+            border-bottom: none;
+            float: left;
+            display: inline-block;
+            padding-left: @spacer / 4;
+            padding-right: @spacer / 4;
+        }
     }
     #scanMeta input {
         font-size: large;

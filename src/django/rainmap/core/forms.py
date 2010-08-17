@@ -5,8 +5,6 @@ from core.models import Scan
 
 import NmapOptions
 
-from IPy import IP
-
 import re
 
 DEFAULT_SCAN_OPTIONS = "-sS -PE -PS443 -PA80 -PP -sV -O -sC -T4 -v"
@@ -123,18 +121,25 @@ class ScanForm(ModelForm):
         True
         '''
 
-        if len(entry) > 255:
-            return False # "too long to be a hostname"
-        elif not re.search("\.[a-z]{2,}$", entry, re.I):
-            return False # "not a qualified hostname"
         if entry.endswith("."):
             entry = entry[:-1]
-        invalid = re.compile("[^a-z\d-]", re.IGNORECASE)
+        if len(entry) > 255:
+            return False # "too long to be a hostname"
+        else:
+            if entry.count("/") == 1:
+                entry, cidr = entry.rsplit("/")
+                if not self._isCIDR(cidr):
+                    return False
+            elif entry.count("/") > 1:
+                return False # only one CIDR group allowed
+            if not re.search("\.[a-z]{2,}$", entry, re.I):
+                return False # "not a qualified hostname"
+            invalid = re.compile("[^a-z\d-]", re.IGNORECASE)
 
-        for label in entry.split("."):
-            if (not label or len(label) > 63 or label.startswith("-")
-                or label.endswith("-") or invalid.search(label)):
-                return False
+            for label in entry.split("."):
+                if (not label or len(label) > 63 or label.startswith("-")
+                    or label.endswith("-") or invalid.search(label)):
+                    return False
 
         return True
 
@@ -142,6 +147,12 @@ class ScanForm(ModelForm):
         '''Check if an IP range has been specified. No checking is made to see
         if this range includes non-public IPs, only that octets are valid.
         '''
+        if entry.count("/") == 1:
+            entry, cidr = entry.rsplit("/")
+            if not self._isCIDR(cidr) or "-" in entry:
+                return False
+        elif entry.count("/") > 1:
+            return False # only one CIDR group allowed
         octets = entry.split(".")
         if len(octets) == 4:
             for octet in octets:
@@ -167,6 +178,17 @@ class ScanForm(ModelForm):
         # all checks passed, must be a valid IP range address
         return True
 
+    def _isCIDR(self, cidr):
+        '''Quick check if the given value could be a CIDR mask'''
+        try:
+            cidr = int(cidr)
+            if 0 > cidr or cidr > 32:
+                return False # invalid CIDR spec
+        except ValueError:
+            return False
+
+        return True
+
     def clean_targets(self):
         '''Validate that the targets passed to the scan match the formats that
         Nmap knows how to handle. We currently only list problematic entries in
@@ -178,14 +200,8 @@ class ScanForm(ModelForm):
         # track errors so that we can inform users of all of them at once
         errlist = []
         for ent in entries:
-            try:
-                ip = IP(ent)
-                if ip.version() != 4 or ip.iptype() != 'PUBLIC':
-                    errlist.append(u"'%s' not a public IPv4 address" % ent)
-            except ValueError:
-                if not self._isIPRange(ent) and not self._isHostname(ent):
-                    errlist.append(u"'%s' neither an IP range nor a qualified \
-                        hostname." % ent)
+            if not self._isIPRange(ent) and not self._isHostname(ent):
+                errlist.append(u"%s is not a valid target specification" % ent)
 
         if errlist:
             raise ValidationError(errlist)
