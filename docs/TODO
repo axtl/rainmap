@@ -2,7 +2,7 @@ This is Rainmap's TODO list. It contains a log of the features left to implement
 
 0.1ALPHA:
     - first major Rainmap release, to coincide with the GSoC term end
-    - need new chrome for the downloadable version
+    - need new chrome for the downloadable version @done(2010-08-18)
 
 Infrastructure:
 	- SELinux policies for apache, postgresql, mod_wsgi
@@ -27,7 +27,7 @@ User Interface (HTML + CSS):
 		- improve XSL output, especially colouring of open vs. closed ports
 		- notify when scan is done via AJAX
 		- ability to diff with a previous scan result
-		- integrate results in existing chrome
+		- integrate results in existing chrome @done(2010-08-18)
 		- full scan results emailed (with diff as requested)
 			- email text version only if below certain size
 	- settings on profile page
@@ -36,26 +36,27 @@ User Interface (HTML + CSS):
 			- scan output (text) if below certain threshold
 
 Administrative Interface:
-	- admin dashboard / overview (system info, statistics)
-	- user account CRUD
-	- user classes (create, add users)
+	- admin dashboard / overview (system info, statistics) @done(2010-08-18)
+	- user account CRUD @done(2010-08-18)
+	- user classes (create, add users) @drop @done(2010-08-18)
 	- generate/view usage reports (scan types and options)
-	- edit blacklists to prevent scans of certain sites/ranges
+	- edit blacklists to prevent scans of certain sites/ranges @done(2010-08-18)
 	- view abuse notices
+	- display more information for various elements, i.e. the scan listing should display who owns them etc
 
 Scan Execution:
 	Worker processes:
 		- message types:
 			- 'settings-update' updates blacklist and global options
-			- 'purge_data' deletes scan assets when the scan profile is removed
+			- 'purge_data' deletes scan assets when the scan profile is removed @done(2010-08-18)
 		- update local scan-specific settings (i.e. blacklists) [try to keep in-memory, not on disk]
 	- scheduling
 		- cancellations happen at DB level
 		- schedule using a celerybeat task every 15 minutes
 
 Scaling:
-	- storage details
-	- backend setup details
+	- storage details @done(2010-08-18)
+	- backend setup details @done(2010-08-18)
 	- Fabric scripts for automated deployment?
 
 Future:
