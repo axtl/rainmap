@@ -4,7 +4,7 @@
 {% block title %}{% trans 'Scan Details' %} | {{ block.super }}{% endblock %}
 
 {% block content %}
-    <span class="name"><a href="#">{{ scan.name }}</a></span>
+    <span class="name"><a href={% url core_scan_view scan.id %}>{{ scan.name }}</a></span>
     <div class="actions">
         <span class="ann"><a href={% url core_scan_run scan.id %}>{% trans "Run" %}</a></span>
         &nbsp;&bull;&nbsp;
