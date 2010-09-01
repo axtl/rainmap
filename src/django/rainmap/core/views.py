@@ -212,16 +212,20 @@ def result_view(request, result_id, template='core/result_view.html'):
             if view == 'html' or view == 'xml':
                 import os
                 name, ext = os.path.splitext(r.output)
-                ret = os.path.join(settings.OUTPUT_URL, name + "." + view)
+                ret = os.path.join(settings.OUTPUT_URL,
+                    str(r.for_scan.owner.id), str(r.for_scan.id),
+                    name + "." + view)
                 return redirect(ret)
             else:
                 messages.error(request, u"No such format. Your results are \
                     available as HTML and XML only.")
                 return redirect(referer)
         else: # view in iframe
+            resloc = os.path.join(settings.OUTPUT_URL,
+                str(r.for_scan.owner.id), str(r.for_scan.id), r.output)
             return render_to_response(template,
                 {'result': r,
-                 'resloc': (settings.OUTPUT_URL + r.output),
+                 'resloc': resloc,
                  'referer': referer},
                 context_instance=RequestContext(request))
     except ObjectDoesNotExist:
@@ -239,7 +243,7 @@ def result_delete(request, result_id, template='core/result_delete.html'):
         sr = ScanResult.objects.get(id=result_id, for_scan__owner=request.user)
         sr.delete()
         asset_path = os.path.abspath(os.path.join(settings.OUTPUT_ROOT,
-            sr.output))
+            str(sr.for_scan.owner.id), str(sr.for_scan.id), sr.output))
         tasks.purge_data.delay(asset_path, request.user.id)
         messages.info(request, u"Result deleted.")
     except ObjectDoesNotExist:

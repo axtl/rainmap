@@ -1,3 +1,4 @@
+import shutil
 import subprocess
 from os import chdir, devnull, makedirs, remove
 from os.path import abspath, normpath, normcase, join, getsize, isdir, isfile
