@@ -209,7 +209,6 @@ def result_view(request, result_id, template='core/result_view.html'):
         # user-specified type; check if the requested format is available
         if r.output and view:
             if view == 'html' or view == 'xml':
-                import os
                 name, ext = os.path.splitext(r.output)
                 ret = os.path.join(settings.OUTPUT_URL,
                     str(r.for_scan.owner.id), str(r.for_scan.id),
