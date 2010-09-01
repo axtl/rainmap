@@ -1,7 +1,7 @@
 import shutil
 import subprocess
-from os import chdir, devnull, makedirs, remove
-from os.path import abspath, normpath, normcase, join, getsize, isdir, isfile
+from os import chdir, devnull, unlink
+from os.path import join, isdir, isfile
 
 import celery.log
 from celery.decorators import task
@@ -11,7 +11,10 @@ from celery.decorators import task
 def purge_data(asset_path, owner_id):
     logger = celery.log.LoggingProxy(celery.log.get_default_logger())
     logger.write("PURGE For User %s | Path: %s" % (owner_id, asset_path))
-    shutil.rmtree(asset_path, False, None)
+    if isdir(asset_path):
+        shutil.rmtree(asset_path, False, None)
+    else:
+        unlink(asset_path)
 
 
 @task(ignore_result=True)
