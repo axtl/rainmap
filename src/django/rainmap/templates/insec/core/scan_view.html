@@ -14,7 +14,7 @@
         <span class="ann del-ref"><a href={% url core_scan_delete scan.id %}>{% trans "Delete" %}</a></span>
     </div>
     <h4>{% trans "Command:" %}</h4>
-    <pre class="screen"><code class="command"> nmap {{ scan.command }} {{ scan.targets }} </code></pre>
+    <pre class="screen"><code class="command"># nmap {{ scan.command }} {{ scan.targets }} </code></pre>
     {% if result_list.object_list.count > 0 %}
         <h4>{% trans "Results:" %}</h4>
         <ol>

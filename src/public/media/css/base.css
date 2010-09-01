@@ -428,7 +428,7 @@ form #submit {
 }
 form .options ul { padding-left: 1em; }
 form .single label { margin-right: 1em; }
-.command {
+.screen {
   background-color: #000000;
   color: #00ff00;
   font-family: 'Consolas', 'Anonymous Pro', monospace;
