@@ -2,7 +2,7 @@ This document contains information on the steps necessary to install Rainmap.
 
 ## INSTALLATION ##
 
-### Rainmap — The Web Front-end ###
+### Rainmap - Web Frontend ###
 
 Rainmap is a Django project. If you have any prior experience with Django, you should be able to skip a number of steps below.
 
@@ -10,14 +10,28 @@ Generally-speaking, you don't *need* to use any of the things below and can opt 
 
 - install CentOS 5.x or higher (Rainmap was originally developed on 5.5)
 - add EPEL: https://fedoraproject.org/wiki/EPEL and install dependencies:
+    
+    `sudo yum install erlang python-psycopg2 postgresql-server postgresql-python httpd mod_wsgi python-simplejson python-ctypes python-devel python-setuptools python-pip gcc gcc-c++`
 
-    sudo yum install python-psycopg2 postgresql-server postgresql-python httpd mod_wsgi python-simplejson python-pip python-ctypes python-devel subversion rabbitmq-server supervisor
+- RabbitMQ is available from the EPEL repository, but we recommend installing the relevant RPM from the official site: http://www.rabbitmq.com/server.html
+    - configure RabbitMQ
+    - remember to adjust your hostnames and iptables rules if you want to enable clustering
 
-- some Python dependencies should be installed via `pip`, as this will give you more up-to-date versions; for example, install via pip `django`, `django-registration` and `django-celery`
-    - Rainmap requires at least `django-registration` version 0.8; at the time of writing, `pip` only installs version 0.7, which will cause problems and prevent sign-ups
-- configure PostgreSQL with a `rainmapdba` user and `rainmap_db` database (Appendix A below has more instructions on that.)
-- configure RabbitMQ (for now, Rainmap with RabbitMQ has only been tested on a single machine cluster)
-- configure `supervisord` to be able to have django-celery automatically restart itself as needed; please refer to the sample files 'conf/supervisord.conf' and 'conf/celeryd.conf'
+- configure PostgreSQL with a `rainmapdba` user and `rainmap_db` database.
+- configure Apache; please refer to `contrib/rainmap.conf` for a sample
+- enable `mod_wsgi` by editing `/etc/httpd/conf.d/wsgi.conf` - make sure you remove `mod_python` if already installed. More information:
+    - http://code.google.com/p/modwsgi/wiki/InstallationInstructions
+    - http://code.google.com/p/modwsgi/wiki/IntegrationWithDjango
+    - http://docs.djangoproject.com/en/dev/howto/deployment/modwsgi/
+
+- we recommend you install Django & `django-registration` from source:
+    - django: http://www.djangoproject.com/download/
+    - django-registration: http://bitbucket.org/ubernostrum/django-registration/downloads
+    - and `celery` with pip: sudo pip install django-celery # celery
+
+- install `supervisor` from source from http://supervisord.org/dist/
+    - configure `supervisord` to be able to have `django-celery` automatically restart itself as needed; please refer to the sample files `contrib/supervisord.conf` and `contrib/supervisord/celeryd.conf`
+
 - if you don't already have the Rainmap code, grab it via Subversion:
 
     svn co --username=guest --pasword="" svn://svn.insecure.org/rainmap/ rainmap
@@ -26,21 +40,33 @@ Generally-speaking, you don't *need* to use any of the things below and can opt 
     - the `django/` folder contains the application logic
     - the `public/` folder contains static files
     - symlink or move `$DJANGO/contrib/admin/media/` to `public/admin-media` (where $DJANGO is the folder where Django is installed in)
-- if you need help configuring Apache, Appendix B has a sample configuration file.
-- enable `mod_wsgi` by editing `/etc/httpd/conf.d/mod_wsgi.conf`. More information:
-    - http://code.google.com/p/modwsgi/wiki/InstallationInstructions
-    - http://code.google.com/p/modwsgi/wiki/IntegrationWithDjango
-    - http://docs.djangoproject.com/en/dev/howto/deployment/modwsgi/
 - you'll need a `settings.py` in `/var/local/rainmap/django/rainmap/`; start from the `settings.example` file provided, and read the header comments for things to change (DATABASE, EMAIL and SECRET_KEY), then rename the file to `settings.py`
 - start the `postgresql` and `httpd` services
+- start `supervisord`
 - go to `/var/local/rainmap/django/rainmap/` and have Django create the required database tables:
 
-    ./manage.py syncdb
+    `./manage.py syncdb`
 
 Congratulations! You should now have a working installation of Rainmap!
 
 If you encounter any problems with this install guide, or want to submit patches, please use the nmap-dev mailing list at http://seclists.org/nmap-dev/
 
+### RAINQ - RabbitMQ Worker Nodes ###
+
+Only the code in `src/celeryd` is needed for worker nodes, and you may place it under i.e. `/var/local/rainmap/` Please use the `contrib/supervisord.conf` and `contrib/celeryd.conf` files for samples on how to configure Celery and Supervisord on worker nodes.
+
+Only a subset of packages are required for worker nodes:
+
+        sudo yum install erlang python-simplejson python-ctypes python-devel python-setuptools python-pip gcc gcc-c++
+
+- install RabbitMQ from source as before
+- install Nmap from source http://nmap.org/download.html
+- install `celery` via pip
+- make shared storage available, i.e. via NFS. For now, all nodes must have the location that is defined in `settings.py` on the Django app server, i.e. all nodes use /var/local/rainmap/storage/
+    - you most likely need to use no_root_squash in /etc/exports if you use NFS
+    - The storage location must be read-writable by the webserver (apache) user
+- the Django node MUST be part of the RabbitMQ cluster, as it is responsible for sending out emails and performing database tasks. Refer to `/contrib/supervisord/celeryd.conf` for instructions on how to limit tasks on the web-app node.
+- enable clustering for all RabbitMQ nodes: http://www.rabbitmq.com/clustering.html
 
 ## APPENDIX A: Configuring PostgreSQL ##
 
@@ -78,8 +104,3 @@ Create the database. The Rainmap config expects its name to be `rainmap_db`:
 Then restart the PostgreSQL server:
 
     sudo service postgresql restart
-
-
-## APPENDIX B: Apache configuration example ##
-
-Please refer to 'conf/rainmap.conf'
