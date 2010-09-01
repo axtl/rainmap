@@ -175,6 +175,7 @@ def scan_run(request, scan_id, template='core/scan_list.html'):
     if requested_scan:
         scan_result = ScanResult(for_scan=requested_scan)
         scan_result.run_on = datetime.now()
+        scan_result.save()
         # sanitize output file name
         name_base = "%s_%s" % (requested_scan.name, str(scan_result.run_on))
         while bads.search(name_base):
