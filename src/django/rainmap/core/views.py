@@ -1,3 +1,9 @@
+import os
+import re
+
+from datetime import datetime
+from os import path
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.urlresolvers import reverse
@@ -8,12 +14,15 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from rainmap import settings
+from rainq import tasks
 
 from core.models import UserProfile, Scan, ScanResult
 from core.forms import UserForm, ScanForm
-from core import tasks
 
 _no_scan_err_ = u"Hmm, there's no such scan associated with your account."
+
+# matching against characters Windows restricts in file names, and slashes
+bads = re.compile('/|\\\|\?|\%|\*|\:|;|\||\"|\<|\>')
 
 
 def _get_scan(request, scan_id):
@@ -133,7 +142,9 @@ def scan_delete(request, scan_id, template='core/scan_list.html'):
     requested_scan = _get_scan(request, scan_id)
     if requested_scan:
         requested_scan.delete()
-        tasks.purge_data.delay(request.user.id, scan_id)
+        asset_path = os.path.abspath(os.path.join(settings.OUTPUT_ROOT,
+            str(request.user.id), str(scan_id)))
+        tasks.purge_data.delay(asset_path, request.user.id)
         messages.info(request, u'Scan deleted.')
     else:
         messages.error(request, _no_scan_err_)
@@ -162,9 +173,26 @@ def scan_run(request, scan_id, template='core/scan_list.html'):
     next = request.META.get('HTTP_REFERER', None) or 'core_scan_list'
     requested_scan = _get_scan(request, scan_id)
     if requested_scan:
-        tasks.run_scan.delay(scan_id)
-        messages.info(request,
-            u'Your scan is queued and will be run shortly.')
+        scan_result = ScanResult(for_scan=requested_scan)
+        scan_result.run_on = datetime.now()
+        # sanitize output file name
+        name_base = "%s_%s" % (requested_scan.name, str(scan_result.run_on))
+        while bads.search(name_base):
+            name_base = name_base.replace(bads.search(name_base).group(), "-")
+
+        name_base = name_base.replace(" ", "_").strip()
+        rel_dir = os.path.join(str(requested_scan.owner.id),
+            str(requested_scan.id))
+
+        # create folders, as needed
+        if not os.path.isdir(os.path.join(settings.OUTPUT_ROOT, rel_dir)):
+            os.makedirs(os.path.join(settings.OUTPUT_ROOT, rel_dir))
+        workdir = os.path.join(settings.OUTPUT_ROOT, rel_dir)
+        cmd = "--reason --osscan-guess --webxml -oX %s.xml %s %s".strip() % (
+            name_base, requested_scan.command, requested_scan.targets)
+        tasks.run_scan.delay(name_base, workdir, scan_id, request.user.id,
+            scan_result.id, cmd)
+        messages.info(request, u'Your scan is queued and will be run shortly.')
 
     else:
         messages.error(request, _no_scan_err_)
@@ -209,7 +237,9 @@ def result_delete(request, result_id, template='core/result_delete.html'):
     try:
         sr = ScanResult.objects.get(id=result_id, for_scan__owner=request.user)
         sr.delete()
-        tasks.purge_result.delay(sr.output)
+        asset_path = os.path.abspath(os.path.join(settings.OUTPUT_ROOT,
+            sr.output))
+        tasks.purge_data.delay(asset_path, request.user.id)
         messages.info(request, u"Result deleted.")
     except ObjectDoesNotExist:
         messages.error(request, u"No such result. Has the scan completed? \

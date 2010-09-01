@@ -53,7 +53,7 @@ OUTPUT_URL = "/storage/"
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = "/var/local/rainmap/public/"
+MEDIA_ROOT = "/var/local/rainmap/public/media/"
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -138,5 +138,26 @@ BROKER_USER = "rainq"
 BROKER_PASSWORD = ""
 BROKER_VHOST = "/"
 
+CELERY_DISABLE_RATE_LIMITS = True
 CELERY_RESULT_BACKEND = "amqp"
 CELERY_IMPORTS = ("core.tasks", )
+CELERY_DEFAULT_QUEUE = "rainq"
+CELERY_DEFAULT_EXCHANGE_TYPE = "direct"
+CELERY_DEFAULT_ROUTING_KEY = "rainq"
+CELERY_QUEUES = {
+    CELERY_DEFAULT_QUEUE: {
+        "exchange": "rainq",
+        "binding_key": CELERY_DEFAULT_ROUTING_KEY,
+    },
+    "email": {
+        "exchange": "email",
+        "binding_key": "rainq.email",
+    },
+}
+# 'finish_scan' is a wrap-up task that MUST execute on the appserver
+CELERY_ROUTES = ({"rainq.tasks.process_result": {
+                    "queue": "email",
+                    "routing_key": "rainq.email"}}, )
+
+# max size in kB for outgoing attachments
+EMAIL_RESULT_LIMIT = 1000
