@@ -87,4 +87,4 @@ def process_result(result_id, finished_ok, output):
 
         subj = ''.join(subj.splitlines())
 
-        sr.for_scan.owner.email_user(subj, body, 'scanbot@rainmap.org')
+        result.for_scan.owner.email_user(subj, body, 'scanbot@rainmap.org')
