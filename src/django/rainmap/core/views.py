@@ -2,7 +2,6 @@ import os
 import re
 
 from datetime import datetime
-from os import path
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
@@ -221,8 +220,11 @@ def result_view(request, result_id, template='core/result_view.html'):
                     available as HTML and XML only.")
                 return redirect(referer)
         else: # view in iframe
-            resloc = os.path.join(settings.OUTPUT_URL,
-                str(r.for_scan.owner.id), str(r.for_scan.id), r.output)
+            if r.output:
+                resloc = os.path.join(settings.OUTPUT_URL,
+                    str(r.for_scan.owner.id), str(r.for_scan.id), r.output)
+            else:
+                resloc = None
             return render_to_response(template,
                 {'result': r,
                  'resloc': resloc,
@@ -242,9 +244,10 @@ def result_delete(request, result_id, template='core/result_delete.html'):
     try:
         sr = ScanResult.objects.get(id=result_id, for_scan__owner=request.user)
         sr.delete()
-        asset_path = os.path.abspath(os.path.join(settings.OUTPUT_ROOT,
-            str(sr.for_scan.owner.id), str(sr.for_scan.id), sr.output))
-        tasks.purge_data.delay(asset_path, request.user.id)
+        if sr.output:
+            asset_path = os.path.abspath(os.path.join(settings.OUTPUT_ROOT,
+                str(sr.for_scan.owner.id), str(sr.for_scan.id), sr.output))
+            tasks.purge_data.delay(asset_path, request.user.id)
         messages.info(request, u"Result deleted.")
     except ObjectDoesNotExist:
         messages.error(request, u"No such result. Has the scan completed? \
