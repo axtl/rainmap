@@ -17,15 +17,15 @@ def purge_data(asset_path, owner_id):
 def run_scan(name_base, workdir, scan_id, owner_id, result_id, cmd):
     logger = celery.log.LoggingProxy(celery.log.get_default_logger())
     chdir(workdir)
-    logger.write("BEGIN Scan %d | User %d\ncmd: %s" % (scan_id, owner_id, cmd))
+    logger.write("BEGIN Scan %s | User %s\ncmd: %s" % (scan_id, owner_id, cmd))
     status_nmap = subprocess.call(["nmap"] + cmd.split(), stdout=open(devnull))
-    logger.write("END Scan %d | User %d\nstatus: %d" % (scan_id, owner_id,
+    logger.write("END Scan %s | User %s\nstatus: %d" % (scan_id, owner_id,
         status_nmap))
 
     finished_ok = (status_nmap == 0)
     # try to save output. even for errors, we might see what happened
     if isfile(name_base + ".xml"):
-        logger.write("XSLT Scan %d | User %d" % (scan_id, owner_id))
+        logger.write("XSLT Scan %s | User %s" % (scan_id, owner_id))
         status_xslt = subprocess.call(["xsltproc", name_base + ".xml", "-o",
             name_base + ".html"])
         if status_xslt == 0:
@@ -36,7 +36,7 @@ def run_scan(name_base, workdir, scan_id, owner_id, result_id, cmd):
         output = None
         finished_ok = False # well, no output *is* an error
 
-    process_result.delay(scan_id, result_id, finished_ok, output)
+    process_result.delay(result_id, finished_ok, output)
 
 
 @task(ignore_result=True)
