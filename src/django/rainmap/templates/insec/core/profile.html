@@ -8,6 +8,8 @@
 {% endblock %}
 
 {% block content %}
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script type="text/javascript" src="/shared/js/scanform.js"></script>
     <div id="cr_info">{% trans 'You have'%} <span class="highlight">{{ profile.cr_rem }}</span> {% trans 'credits remaining.'%}</div>
     <div class="body">{% spaceless %}
         {% url auth_password_change as password_change_url %}

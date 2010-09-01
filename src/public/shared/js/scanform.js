@@ -34,4 +34,12 @@ $(document).ready(function() {
     $("#hostDiscovery > ul > li :not(#id_Pn)").click(function() {
         $("#id_Pn").attr("checked", false);
     });
+    // enable "mail on errors" if "mail on all" is checked
+    $("#id_mra").click(function() {
+        $("#id_mre").attr("checked", true);
+    });
+    // disable "mail on all" if "mail on errors" is unchecked
+    $("#id_mre").click(function() {
+        $("#id_mra").attr("checked", false);
+    });
 });

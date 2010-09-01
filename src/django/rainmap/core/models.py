@@ -13,13 +13,13 @@ class UserProfile(models.Model):
     """
     for_user = models.OneToOneField(User)
     cr_rem = models.IntegerField("Credits Remaining", default=1000)
-    mail_results_all = models.BooleanField("Email All Results", default=True)
-    mail_results_err = models.BooleanField("Email Only On Error",
+    mail_results_all = models.BooleanField("Email When a Scan Finishes",
+        default=True)
+    mail_results_err = models.BooleanField("Only Send Email On Errors",
         default=True)
 
     def __unicode__(self):
         return self.for_user.username
-
 
 def callback_register_profile(sender, instance, **kw):
     profile, new = UserProfile.objects.get_or_create(for_user=instance)
@@ -41,9 +41,8 @@ class Scan(models.Model):
         help_text=u"Something to remember this profile by.")
     command = models.TextField(blank=True, null=True)
     targets = models.TextField(verbose_name=u'Target(s)',
-        help_text=u'Specify targets to scan by hostname, IP range, or \
-        <a href="http://en.wikipedia.org/wiki/CIDR">CIDR</a> form. Separate \
-        multiple entries with spaces or new lines.')
+        help_text=u'Specify targets to scan by hostname, IP range, or in CIDR '
+        'form. Separate multiple entries with spaces or new lines.')
     schedule_date = models.DateTimeField(blank=True, null=True)
     schedule_interval = models.IntegerField(blank=True, null=True)
 

@@ -1,7 +1,7 @@
 from django.forms import ModelForm, ChoiceField, BooleanField, \
     CharField, IntegerField, ValidationError
 from django.contrib.auth.models import User
-from core.models import Scan
+from core.models import Scan, UserProfile
 
 import NmapOptions
 
@@ -10,11 +10,56 @@ import re
 DEFAULT_SCAN_OPTIONS = "-sS -PE -PS443 -PA80 -PP -sV -O -sC -T4 -v"
 
 
+class ProfileForm(ModelForm):
+
+    class Meta:
+        model = UserProfile
+        fields = ['mail_results_err', 'mail_results_all']
+
+
 class UserForm(ModelForm):
 
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email']
+
+    mra = None
+    mre = None
+
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs)
+
+        if 'instance' in kwargs:
+            up = kwargs['instance'].userprofile
+            p = ProfileForm(instance=up)
+            self.fields['mra'] = p.fields['mail_results_all']
+            self.fields['mra'].initial = up.mail_results_all
+            self.fields['mre'] = p.fields['mail_results_err']
+            self.fields['mre'].initial = up.mail_results_err
+
+    def clean(self):
+        super(UserForm, self).clean()
+        cleaned_data = self.cleaned_data
+        mra = cleaned_data.get("mra")
+        mre = cleaned_data.get("mre")
+        # mail on all but not on errors? does not compute.
+        if mra and not mre:
+            raise ValidationError(u"You'll need to accept emails on errors, "
+                "or not accept them at all. Your current selection is "
+                "ambiguous.")
+
+        return cleaned_data
+
+    def save(self, commit=True):
+        model = super(UserForm, self).save(commit=False)
+        model.userprofile.mail_results_all = self.cleaned_data['mra']
+        model.userprofile.mail_results_err = self.cleaned_data['mre']
+
+        if commit:
+            model.save()
+            model.userprofile.save()
+
+        return model
 
 
 class ScanForm(ModelForm):

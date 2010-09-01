@@ -22,12 +22,20 @@ $(document).ready(function() {
     $(".options > ul").click(function(event) {
         event.stopPropagation();
     });
-    // disable everything else if Pn selected
+    // disable everything else in hostDiscovery if Pn selected
     $("#id_Pn").click(function() {
         $("#hostDiscovery > ul > li :not(#id_Pn)").attr("checked", false);
     });
     // uncheck Pn if another sibling is selected
     $("#hostDiscovery > ul > li :not(#id_Pn)").click(function() {
         $("#id_Pn").attr("checked", false);
+    });
+    // enable "mail on errors" if "mail on all" is checked
+    $("#id_mra").click(function() {
+        $("#id_mre").attr("checked", true);
+    });
+    // disable "mail on all" if "mail on errors" is unchecked
+    $("#id_mre").click(function() {
+        $("#id_mra").attr("checked", false);
     });
 });
