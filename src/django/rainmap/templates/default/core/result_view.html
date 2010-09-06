@@ -5,7 +5,7 @@
 
 {% block content %}
     <div class="backlink"><a href={{ referer }}>&laquo;&nbsp;{% trans "Back" %}</a></div>
-    <span class="result{% if not result.finished_ok %} attn{% endif %}"><a class="name" href={% url core_scan_view result.for_scan.id %}>{{ result.for_scan.name }}</a> {% trans "finished about" %} <a class="res" href={% url core_result_view result.id %}>{{ result.finished_on|timesince }}</a> {% trans "ago" %}</span>
+    <span class="result{% if result.finished_on and not result.finished_ok %} attn{% endif %}"><a class="name" href={% url core_scan_view result.for_scan.id %}>{{ result.for_scan.name }}</a>{% if result.finished_on %}{% trans "finished about" %} <a class="res" href={% url core_result_view result.id %}>{{ result.finished_on|timesince }}</a>{% else %}{% trans "was started" %} {{ result.started_on|timesince}}{% endif %} {% trans "ago" %}</span>
     <div class="actions">
         <span class="ann"><a href={% url core_scan_run result.for_scan.id %}>{% trans "Rerun Scan" %}</a></span>
         &nbsp;&bull;&nbsp;

@@ -62,7 +62,7 @@ class ScanResult(models.Model):
     finished_ok = models.BooleanField()
 
     class Meta:
-        ordering = ('-finished_on', '-started_on', )
+        ordering = ('-id', )
 
 
 class Blacklist(models.Model):
