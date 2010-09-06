@@ -172,11 +172,11 @@ def scan_run(request, scan_id, template='core/scan_list.html'):
     next = request.META.get('HTTP_REFERER', None) or 'core_scan_list'
     requested_scan = _get_scan(request, scan_id)
     if requested_scan:
-        scan_result = ScanResult(for_scan=requested_scan)
-        scan_result.run_on = datetime.now()
-        scan_result.save()
+        result = ScanResult(for_scan=requested_scan)
+        result.started_on = datetime.now()
+        result.save()
         # sanitize output file name
-        name_base = "%s_%s" % (requested_scan.name, str(scan_result.run_on))
+        name_base = "%s_%s" % (requested_scan.name, str(result.started_on))
         while bads.search(name_base):
             name_base = name_base.replace(bads.search(name_base).group(), "-")
 
@@ -191,7 +191,7 @@ def scan_run(request, scan_id, template='core/scan_list.html'):
         cmd = "--reason --osscan-guess --webxml -oX %s.xml %s %s".strip() % (
             name_base, requested_scan.command, requested_scan.targets)
         tasks.run_scan.delay(name_base, workdir, scan_id, request.user.id,
-            scan_result.id, cmd)
+            result.id, cmd)
         messages.info(request, u'Your scan is queued and will be run shortly.')
 
     else:

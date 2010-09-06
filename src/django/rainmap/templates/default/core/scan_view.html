@@ -20,7 +20,7 @@
         <ol>
             {% for result in result_list.object_list  %}
                 <li>
-                    <span class="result{% if not result.finished_ok %} attn{% endif %}"><a href={% url core_result_view result.id %}>{{ result.run_on|timesince }}</a> {% trans "ago" %}</span>
+                    <span class="result{% if not result.finished_ok %} attn{% endif %}"><a href={% url core_result_view result.id %}>{{ result.finished_on|timesince }}</a> {% trans "ago" %}</span>
                         <div class="actions ann del-ref"><a href={% url core_result_delete result.id %}>{% trans "Delete" %}</a></div>
                 </li>
             {% endfor %}

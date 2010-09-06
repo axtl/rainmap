@@ -19,7 +19,8 @@ class UserProfile(models.Model):
         default=True)
 
     def __unicode__(self):
-        return self.for_user.username
+        return u"Profile for " + self.for_user.username
+
 
 def callback_register_profile(sender, instance, **kw):
     profile, new = UserProfile.objects.get_or_create(for_user=instance)
@@ -56,11 +57,12 @@ class Scan(models.Model):
 class ScanResult(models.Model):
     for_scan = models.ForeignKey(Scan)
     output = models.CharField(max_length=255, blank=True, null=True)
-    run_on = models.DateTimeField()
+    started_on = models.DateTimeField()
+    finished_on = models.DateTimeField(blank=True)
     finished_ok = models.BooleanField()
 
     class Meta:
-        ordering = ('-run_on', )
+        ordering = ('-finished_on', '-started_on', )
 
 
 class Blacklist(models.Model):

@@ -1,3 +1,4 @@
+import datetime
 import glob
 import shutil
 import subprocess
@@ -65,6 +66,7 @@ def process_result(result_id, finished_ok, output):
     if output:
         result.output = output
 
+    result.finished_on = datetime.datetime.now()
     result.save()
 
     if scan.owner.userprofile.mail_results_all or (
