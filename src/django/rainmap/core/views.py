@@ -245,7 +245,8 @@ def result_delete(request, result_id, template='core/result_delete.html'):
         sr.delete()
         if sr.output:
             asset_path = os.path.abspath(os.path.join(settings.OUTPUT_ROOT,
-                str(sr.for_scan.owner.id), str(sr.for_scan.id), sr.output))
+                str(sr.for_scan.owner.id), str(sr.for_scan.id),
+                os.path.splitext(sr.output)[0]))
             tasks.purge_data.delay(asset_path, request.user.id)
         messages.info(request, u"Result deleted.")
     except ObjectDoesNotExist:

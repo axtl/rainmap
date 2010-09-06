@@ -1,3 +1,4 @@
+import glob
 import shutil
 import subprocess
 from os import chdir, devnull, unlink
@@ -14,7 +15,11 @@ def purge_data(asset_path, owner_id):
     if isdir(asset_path):
         shutil.rmtree(asset_path, False, None)
     else:
-        unlink(asset_path)
+        for f in glob.glob(asset_path + "*"):
+            try:
+                unlink(f)
+            except:
+                pass
 
 
 @task(ignore_result=True)
