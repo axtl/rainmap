@@ -58,7 +58,7 @@ class ScanResult(models.Model):
     for_scan = models.ForeignKey(Scan)
     output = models.CharField(max_length=255, blank=True, null=True)
     started_on = models.DateTimeField()
-    finished_on = models.DateTimeField(blank=True)
+    finished_on = models.DateTimeField(blank=True, null=True)
     finished_ok = models.BooleanField()
 
     class Meta:
