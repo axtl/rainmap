@@ -1,0 +1,15 @@
+Rainmap AUTHORS
+===============
+
+Written by:       alexandru
+Email local part: alex
+Email domain:     hackd.net
+
+Initial development was funded through Google Summer of Code 2010.
+
+Many helpful comments, suggestions and other useful information taken from the
+nmap-dev list (@insecure.org) and other contributors via email.
+
+Rainmap requirements, ideas and general support given by Fyodor.
+
+Rainmap shares NmapOptions.py with Zenmap, originally written by David Fifield
