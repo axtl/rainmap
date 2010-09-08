@@ -19,7 +19,7 @@ class UserProfile(models.Model):
         default=True)
 
     def __unicode__(self):
-        return u"Profile for " + self.for_user.username
+        return u"%s for User: '%s'" % (self.id, self.for_user.username)
 
 
 def callback_register_profile(sender, instance, **kw):
@@ -51,7 +51,8 @@ class Scan(models.Model):
         ordering = ('-id', )
 
     def __unicode__(self):
-        return self.name
+        return u"%s '%s' for User: '%s'" % (self.id, self.name,
+            self.owner.username)
 
 
 class ScanResult(models.Model):
@@ -63,6 +64,9 @@ class ScanResult(models.Model):
 
     class Meta:
         ordering = ('-id', )
+
+    def __unicode__(self):
+        return u"%s for Scan: '%s'" % (self.id, self.for_scan.name)
 
 
 class Blacklist(models.Model):
@@ -79,4 +83,4 @@ class Blacklist(models.Model):
     desc = models.TextField()
 
     def __unicode__(self):
-        return self.desc
+        return u"%s description: '%s'" % (self.id, self.desc)
