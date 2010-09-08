@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>{% load i18n %}
-        <title>{% block title %}{% trans 'Rainmap' %}{% endblock %}</title>
+        <title>{% block title %}{% trans 'Nscan' %}{% endblock %}</title>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
         <link href="{% block stylesheet %}/shared/css/rainmap-insec.css{% endblock %}" rel="stylesheet" media="all">
         {% ssi /var/local/rainmap/public/shared/templates/standard_body_top.html %}
@@ -51,7 +51,7 @@
             
             <!-- Content -->
             <div id="content">
-                <div class="headline">{% block section_title %}{% endblock %}</div>
+                <div class="headline"><h3>{% block section_title %}{% endblock %}</h3></div>
                 {% if messages %}
                     <ul class="messagelist">
                         {% for message in messages %}

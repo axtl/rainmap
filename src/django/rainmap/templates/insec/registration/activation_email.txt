@@ -1,6 +1,6 @@
 {% load i18n %}
 {% blocktrans %}
-    Thanks for registering for an account with Rainmap!
+    Thanks for registering for an account with Nscan!
 
     You have {{ expiration_days }} days to activate this account. You can do so by clicking on the link below:
 
