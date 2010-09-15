@@ -32,9 +32,9 @@ Generally-speaking, you don't *need* to use any of the things below and can opt 
 - install `supervisor` from source from http://supervisord.org/dist/
     - configure `supervisord` to be able to have `django-celery` automatically restart itself as needed; please refer to the sample files `contrib/supervisord.conf` and `contrib/supervisord/celeryd.conf`
 
-- if you don't already have the Rainmap code, grab it via Subversion:
+- if you don't already have the Rainmap code, grab it by following instructions at http://nmap.org/rainmap/ or via Subversion:
 
-    svn co --username=guest --pasword="" svn://svn.insecure.org/rainmap/ rainmap
+    svn co --username=guest --password="" svn://svn.insecure.org/rainmap/ rainmap
 
 - we suggest you create `/var/local/rainmap/` and move `rainmap/src/public` and `rainmap/src/django` in this location:
     - the `django/` folder contains the application logic
