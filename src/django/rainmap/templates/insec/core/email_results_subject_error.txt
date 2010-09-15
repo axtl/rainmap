@@ -1,2 +1,0 @@
-{% load i18n %}
-"{{ scan_name }}" {% trans 'ERRORS'%}

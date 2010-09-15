@@ -58,6 +58,8 @@
 #   get_option_check_auxiliary_widget in OptionBuilder.py
 # 6) Make sure the test case works now.
 
+import re
+
 class option:
     """A single option, part of a pool of potential options. It's just a name
     and a flag saying if the option takes no argument, if an agument is
@@ -69,6 +71,59 @@ class option:
     def __init__(self, name, has_arg):
         self.name = name
         self.has_arg = has_arg
+
+def split_quoted(s):
+    """Like str.split, except that no splits occur inside quoted strings, and
+    quoted strings are unquoted."""
+    r = []
+    i = 0
+    while i < len(s) and s[i].isspace():
+        i += 1
+    while i < len(s):
+        part = []
+        while i < len(s) and not s[i].isspace():
+            c = s[i]
+            if c == "\"" or c == "'":
+                begin = c
+                i += 1
+                while i < len(s):
+                    c = s[i]
+                    if c == begin:
+                        i += 1
+                        break
+                    elif c == "\\":
+                        i += 1
+                        if i < len(s):
+                            c = s[i]
+                        # Otherwise, ignore the error and leave the backslash at
+                        # the end of the string.
+                    part.append(c)
+                    i += 1
+            else:
+                part.append(c)
+                i += 1
+        r.append("".join(part))
+        while i < len(s) and s[i].isspace():
+            i += 1
+
+    return r
+
+def maybe_quote(s):
+    """Return s quoted if it needs to be, otherwise unchanged."""
+    for c in s:
+        if c == "\"" or c == "'" or c.isspace():
+            break
+    else:
+        return s
+
+    r = []
+    for c in s:
+        if c == "\"":
+            r.append("\\\"")
+        else:
+            r.append(c)
+
+    return "\"" + "".join(r) + "\""
 
 def make_options(short_opts, long_opts):
     """Parse a short option specification string and long option tuples into a
@@ -621,7 +676,7 @@ class NmapOptions(object):
             self.handle_result(result)
 
     def parse_string(self, opt_string):
-        self.parse(opt_string.split())
+        self.parse(split_quoted(opt_string))
 
     def render(self):
         opt_list = []
@@ -769,7 +824,7 @@ class NmapOptions(object):
         return opt_list
 
     def render_string(self):
-        return " ".join(self.render())
+        return " ".join([maybe_quote(x) for x in self.render()])
 
 import doctest
 import unittest
@@ -799,6 +854,72 @@ class NmapOptionsTest(unittest.TestCase):
         ops = NmapOptions()
         ops.parse_string(TEST)
         self.assertTrue(type(ops.render()) == list, "type == %s" % type(ops.render))
+
+    def test_quoted(self):
+        """Test that strings can be quoted."""
+        ops = NmapOptions()
+
+        ops.parse_string('--script ""')
+        self.assertEqual(ops["--script"], "")
+        ops.parse_string("--script ''")
+        self.assertEqual(ops["--script"], "")
+
+        ops.parse_string('--script test one two three')
+        self.assertEqual(ops["--script"], "test")
+        self.assertEqual(ops.target_specs, ["one", "two", "three"])
+        ops.parse_string('--script "test" one two three')
+        self.assertEqual(ops["--script"], "test")
+        self.assertEqual(ops.target_specs, ["one", "two", "three"])
+        ops.parse_string('--script "test one" two three')
+        self.assertEqual(ops["--script"], "test one")
+        self.assertEqual(ops.target_specs, ["two", "three"])
+        ops.parse_string('--script test" one" two three')
+        self.assertEqual(ops["--script"], "test one")
+        self.assertEqual(ops.target_specs, ["two", "three"])
+        ops.parse_string('--script test" one"""" two" three')
+        self.assertEqual(ops["--script"], "test one two")
+        self.assertEqual(ops.target_specs, ["three"])
+
+        ops.parse_string("--script test one two three")
+        self.assertEqual(ops["--script"], "test")
+        self.assertEqual(ops.target_specs, ["one", "two", "three"])
+        ops.parse_string("--script 'test' one two three")
+        self.assertEqual(ops["--script"], "test")
+        self.assertEqual(ops.target_specs, ["one", "two", "three"])
+        ops.parse_string("--script 'test one' two three")
+        self.assertEqual(ops["--script"], "test one")
+        self.assertEqual(ops.target_specs, ["two", "three"])
+        ops.parse_string("--script test' one' two three")
+        self.assertEqual(ops["--script"], "test one")
+        self.assertEqual(ops.target_specs, ["two", "three"])
+        ops.parse_string("--script test' one'''' two' three")
+        self.assertEqual(ops["--script"], "test one two")
+        self.assertEqual(ops.target_specs, ["three"])
+
+        ops.parse_string('--script "ab\\\"cd"')
+        self.assertEqual(ops["--script"], "ab\"cd")
+        ops.parse_string('--script "ab\\\\cd"')
+        self.assertEqual(ops["--script"], "ab\\cd")
+        ops.parse_string('--script "ab\\\'cd"')
+        self.assertEqual(ops["--script"], "ab'cd")
+        ops.parse_string("--script 'ab\\\"cd'")
+        self.assertEqual(ops["--script"], 'ab"cd')
+
+        ops.parse_string('"--script" test')
+        self.assertEqual(ops["--script"], "test")
+        ops.parse_string("'--script' test")
+        self.assertEqual(ops["--script"], "test")
+
+    def test_render_quoted(self):
+        """Test that strings that need to be quoted are quoted."""
+        ops = NmapOptions()
+        ops.parse_string('--script "test one two three"')
+        self.assertEqual(ops["--script"], "test one two three")
+        self.assertEqual(ops.target_specs, [])
+        s = ops.render_string()
+        ops.parse_string(s)
+        self.assertEqual(ops["--script"], "test one two three")
+        self.assertEqual(ops.target_specs, [])
 
     def test_end(self):
         """Test that -- ends argument processing."""
@@ -1156,6 +1277,20 @@ class NmapOptionsTest(unittest.TestCase):
             opt_list_2 = ops.render()
             self.assertTrue(opt_list_1 == opt_list_2, "Result of parsing and rendering %s not parsable again" % test)
             self.assertTrue(len(ops.extras) == 0, "Result of parsing and rendering %s left extras: %s" % (test, ops.extras))
+
+class SplitQuotedTest(unittest.TestCase):
+    """A unittest class that tests the split_quoted function."""
+
+    def test_split(self):
+        self.assertEqual(split_quoted(''), [])
+        self.assertEqual(split_quoted('a'), ['a'])
+        self.assertEqual(split_quoted('a b c'), 'a b c'.split())
+
+    def test_quotes(self):
+        self.assertEqual(split_quoted('a "b" c'), ['a', 'b', 'c'])
+        self.assertEqual(split_quoted('a "b c"'), ['a', 'b c'])
+        self.assertEqual(split_quoted('a "b c""d e"'), ['a', 'b cd e'])
+        self.assertEqual(split_quoted('a "b c"z"d e"'), ['a', 'b czd e'])
 
 if __name__ == "__main__":
     doctest.testmod()
