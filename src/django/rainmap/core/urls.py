@@ -1,5 +1,4 @@
 from django.conf.urls.defaults import *
-from core.models import Scan
 
 
 urlpatterns = patterns('core.views',

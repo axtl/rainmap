@@ -3,7 +3,7 @@ import glob
 import shutil
 import subprocess
 from os import chdir, devnull, unlink
-from os.path import join, isdir, isfile
+from os.path import isdir, isfile
 
 import celery.log
 from celery.decorators import task
@@ -52,12 +52,10 @@ def run_scan(name_base, workdir, scan_id, owner_id, result_id, cmd):
 @task(ignore_result=True)
 def process_result(result_id, finished_ok, output):
     from django.contrib.sites.models import Site
-    from django.core.mail import mail_admins, EmailMessage
     from django.core.urlresolvers import reverse
     from django.template.loader import render_to_string
 
-    from rainmap import settings
-    from core.models import Scan, ScanResult
+    from core.models import ScanResult
 
     result = ScanResult.objects.get(id=result_id)
     scan = result.for_scan
