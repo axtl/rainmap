@@ -187,7 +187,7 @@ def scan_run(request, scan_id, template='core/scan_list.html'):
         if not os.path.isdir(os.path.join(settings.OUTPUT_ROOT, rel_dir)):
             os.makedirs(os.path.join(settings.OUTPUT_ROOT, rel_dir))
         workdir = os.path.join(settings.OUTPUT_ROOT, rel_dir)
-        cmd = "--reason --osscan-guess --webxml -oX %s.xml %s %s".strip() % (
+        cmd = "--reason --osscan-guess --webxml -oA %s %s %s".strip() % (
             name_base, requested_scan.command, requested_scan.targets)
         tasks.run_scan.delay(name_base, workdir, scan_id, request.user.id,
             result.id, cmd)
@@ -207,7 +207,7 @@ def result_view(request, result_id, template='core/result_view.html'):
         view = request.GET.get('view', None)
         # user-specified type; check if the requested format is available
         if r.output and view:
-            if view == 'html' or view == 'xml':
+            if view in ['html', 'xml', 'nmap', 'gnmap']:
                 name, ext = os.path.splitext(r.output)
                 ret = os.path.join(settings.OUTPUT_URL,
                     str(r.for_scan.owner.id), str(r.for_scan.id),
@@ -215,7 +215,7 @@ def result_view(request, result_id, template='core/result_view.html'):
                 return redirect(ret)
             else:
                 messages.error(request, u"No such format. Your results are \
-                    available as HTML and XML only.")
+                    available as HTML, XML, and plaintext only.")
                 return redirect(referer)
         else: # view in iframe
             if r.output:

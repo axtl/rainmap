@@ -38,6 +38,7 @@ def run_scan(name_base, workdir, scan_id, owner_id, result_id, cmd):
         logger.write("XSLT Scan %s | User %s" % (scan_id, owner_id))
         status_xslt = subprocess.call(["xsltproc", name_base + ".xml", "-o",
             name_base + ".html"])
+        # html and xml are the most important outputs, so we only track those
         if status_xslt == 0:
             output = name_base + ".html"
         else:

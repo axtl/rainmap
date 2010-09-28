@@ -9,9 +9,13 @@
     <div class="actions">
         <span class="ann"><a href={% url core_scan_run result.for_scan.id %}>{% trans "Rerun Scan" %}</a></span>
         &nbsp;&bull;&nbsp;
-        <span class="ann"><a href="{% url core_result_view result.id %}?view=html" target="_blank">{% trans "Remove Frame" %}</a></span>
+        <span class="ann"><a href="{% url core_result_view result.id %}?view=html" target="_blank">{% trans "No Frame" %}</a></span>
         &nbsp;&bull;&nbsp;
-        <span class="ann"><a href="{% url core_result_view result.id %}?view=xml">{% trans "Download XML" %}</a></span>
+        <span class="ann"><a href="{% url core_result_view result.id %}?view=xml">{% trans "XML" %}</a></span>
+        &nbsp;&bull;&nbsp;
+        <span class="ann"><a href="{% url core_result_view result.id %}?view=nmap">{% trans "Text" %}</a></span>
+        &nbsp;&bull;&nbsp;
+        <span class="ann"><a href="{% url core_result_view result.id %}?view=gnmap">{% trans "Greppable" %}</a></span>
         <span class="ann del-ref"><a href={% url core_result_delete result.id %}>{% trans "Delete This Result" %}</a></span>
     </div>
 
