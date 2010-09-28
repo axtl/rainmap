@@ -56,6 +56,7 @@ class Scan(models.Model):
 
 
 class ScanResult(models.Model):
+    """Store the results for a scan."""
     for_scan = models.ForeignKey(Scan)
     output = models.CharField(max_length=255, blank=True, null=True)
     started_on = models.DateTimeField()
