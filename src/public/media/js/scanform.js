@@ -22,14 +22,26 @@ $(document).ready(function() {
     $(".options > ul").click(function(event) {
         event.stopPropagation();
     });
-    // disable everything else in hostDiscovery if Pn selected
+    
+    // uncheck other hostDiscovery options if -Pn selected
     $("#id_Pn").click(function() {
         $("#hostDiscovery > ul > li :not(#id_Pn)").attr("checked", false);
     });
-    // uncheck Pn if another sibling is selected
+    // uncheck -Pn if another sibling is selected
     $("#hostDiscovery > ul > li :not(#id_Pn)").click(function() {
         $("#id_Pn").attr("checked", false);
     });
+    
+    // uncheck scanTechniques if -sn selected
+    $("#id_sn").click(function() {
+        $("#scanTechniques > ul > li input:checkbox").attr("checked", false);
+        $("#scanTechniques > ul > li input:text").val("");
+    });
+    // uncheck -sn if a scanTechnique is selected
+    $("#scanTechniques > ul > li").click(function() {
+        $("#id_sn").attr("checked", false);
+    })
+    
     // enable "mail on errors" if "mail on all" is checked
     $("#id_mra").click(function() {
         $("#id_mre").attr("checked", true);

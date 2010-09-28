@@ -3,7 +3,7 @@ from django.forms import ModelForm, ChoiceField, BooleanField, \
 from django.contrib.auth.models import User
 from core.models import Scan, UserProfile
 
-import NmapOptions
+from NmapOptions import NmapOptions
 
 import re
 
@@ -68,13 +68,13 @@ class ScanForm(ModelForm):
         model = Scan
         fields = ['name', 'targets', 'schedule_date']
 
-    opts = NmapOptions.NmapOptions()
+    opts = NmapOptions()
 
     ### UI Elements
 
     # host discovery
     sn = BooleanField(required=False,
-            label=u'Ping',
+            label=u'Ping (disables port scanning)',
             help_text=u'disable port scanning')
 
     Pn = BooleanField(required=False,
@@ -258,7 +258,7 @@ class ScanForm(ModelForm):
         options, such as ##,##,###-###,##-###,##
         '''
 
-        data = self.cleaned_data['p']
+        data = self.cleaned_data['p'].strip()
         if not data:
             return data # empty, nothing to check here
 
@@ -292,6 +292,27 @@ class ScanForm(ModelForm):
             raise ValidationError(errlist)
 
         return data
+
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        # make sure Pn is given without conflicting options
+        if cleaned_data['Pn'] and (
+            cleaned_data['sn'] or cleaned_data['PS'] or cleaned_data['PA'] or
+            cleaned_data['PU'] or cleaned_data['PY']):
+
+            raise ValidationError("Cannot assume online AND enable discovery\
+                options.")
+
+        # make sure sn is given without conflicting options
+        if cleaned_data['sn'] and (
+            cleaned_data['sS'] or cleaned_data['sU'] or cleaned_data['p'] or
+            cleaned_data['top_ports']):
+
+            raise ValidationError("You have specified a Ping-only scan, but\
+                still specified port scanning options.")
+
+        # Always return the full collection of cleaned data.
+        return cleaned_data
 
     def __init__(self, owner, *args, **kwargs):
         self.owner = owner
@@ -365,10 +386,12 @@ class ScanForm(ModelForm):
             self.opts['-p'] = None
 
         self.opts['-F'] = self.cleaned_data['F']
+
         if self.cleaned_data['top_ports']:
             self.opts['--top-ports'] = str(self.cleaned_data['top_ports'])
         else:
             self.opts['--top-ports'] = None
+
         self.opts['-sV'] = self.cleaned_data['sV']
         self.opts['-sC'] = self.cleaned_data['sC']
         self.opts['-O'] = self.cleaned_data['O']
