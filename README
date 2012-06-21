@@ -1,12 +1,11 @@
 Rainmap is a web-based application that allows users to create, configure and
 run Nmap scans from within their browser. Almost the entire range of Nmap
-options is available, but users only need to specify the targets they want scanned, and the default options will be adequate in most cases.
+options is available, but users only need to specify the targets they want
+scanned, and the default options will be adequate in most cases.
 
 For the most up-to-date information please visit http://nmap.org/rainmap/
-
-Detailed installation instructions are in `docs/INSTALL`
 
 Please make note of the COPYING terms, which include license information on
 what you can do with Rainmap.
 
-(c) 2010 The Nmap Project, http://nmap.org
+(c) 2010-2012 The Nmap Project, http://nmap.org

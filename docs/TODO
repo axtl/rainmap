@@ -1,40 +1,50 @@
-This is Rainmap's TODO list. It contains a log of the features left to implement, bugs, and serves as a changelog between versions.
+# Rainmap TODO
 
-User Interface (HTML + CSS):
-	- "new/edit" scan form
-		- allow for target file upload
-		- two save buttons
-		- redirect to "view scan" and provide cost, schedule, run options
-		- add port boxes to SYN and ACK
-		- verbosity: "regular, verbose, extra verbose"
-		- most popular ports
-			- 100 [rid of 'fast mode']
-			- 1000 [default]
-			- other opts based on credit system boundaries
-		- radio buttons between 'topmost popular'/'range'
-		- "run now" and "save" submission choices
-	- view scan results
-		- add -oN to list of supported formats
-		- improve XSL output, especially colouring of open vs. closed ports
-		- notify when scan is done via AJAX
-		- ability to diff with a previous scan result
-		- full scan results emailed (with diff as requested)
-			- email text version only if below certain size
-	- settings on profile page
-		- email options for:
-			- completed/failed scans
-			- scan output (text) if below certain threshold
+## User Interface (HTML + CSS)
 
-Administrative Interface:
-	- generate/view usage reports (scan types and options)
-	- view abuse notices
-	- display more information for various elements, i.e. the scan listing should display who owns them etc
+### "New/Edit Scan" form
+* allow for target file upload
+* two save buttons
+* redirect to "view scan" and provide cost, schedule, run options
+* add port boxes to SYN and ACK
+* verbosity: "regular, verbose, extra verbose"
+* most popular ports
+    * 100 [rid of 'fast mode']
+    * 1000 [default]
+    * other opts based on credit system boundaries
+* radio buttons between 'topmost popular'/'range'
+* "run now" and "save" submission choices
 
-Scan Execution:
-	Worker processes:
-		- message types:
-			- 'settings-update' updates blacklist and global options
-		- update local scan-specific settings (i.e. blacklists) [try to keep in-memory, not on disk]
-	- scheduling
-		- cancellations happen at DB level
-		- schedule using a celerybeat task every 15 minutes
+### Scan results
+* add -oN to list of supported formats
+* improve XSL output, especially colouring of open vs. closed ports
+* notify when scan is done via AJAX
+* ability to diff with a previous scan result
+* full scan results emailed (with diff as requested)
+    * email text version only if below certain size
+
+### Profile Settings
+* email options for:
+    * completed/failed scans
+    * scan output (text) if below certain threshold
+
+
+## Administrative Interface
+* generate/view usage reports (scan types and options)
+* view abuse notices
+* display more information for various elements, e.g., the scan listing
+should display who owns it etc.
+
+## Scan Execution
+### Worker processes
+* message types:
+    * 'settings-update' updates blacklist and global options
+* update local scan-specific settings (i.e. blacklists) [try to keep in-
+memory, not on disk]
+
+### Scheduling
+* cancellations happen at DB level
+* schedule using a celerybeat task every 15 minutes
+
+## Deployment
+* make all conf files be templates, reading from a central configuration
