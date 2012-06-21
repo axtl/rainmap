@@ -1,0 +1,11 @@
+## Rainmap Configuration Examples
+
+Here are development/production deployment files, for use with [Vagrant][] and
+[Puppet][].
+
+[Vagrant]: http://vagrantup.com/
+[Puppet]: http://puppetlabs.com/
+
+(_NOTE_: Standalone configuration files can be obtained from the respective
+`/files/` folders of the *puppet* modules, but their individual use is
+discouraged.)

@@ -1,0 +1,2 @@
+alex = alexandru <alex@hackd.net>
+fyodor = fyodor <fyodor@insecure.org>

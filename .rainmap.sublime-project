@@ -1,0 +1,23 @@
+{
+	"folders":
+	[
+		{
+			"file_exclude_patterns":
+			[
+				"*.un~",
+				"*.log",
+				"*.make",
+				"*.fls",
+				"*.aux",
+				"*.bbl",
+				"*.blg",
+				"*.d",
+				"*.out",
+				"*.pdf",
+				"*.temp",
+				"*.sublime-*"
+			],
+			"path": "."
+		}
+	]
+}

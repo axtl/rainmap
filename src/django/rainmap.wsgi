@@ -1,9 +1,9 @@
 import os
 import sys
 
-sys.path.append('/var/local/rainmap/django')
-sys.path.append('/var/local/rainmap/django/rainmap')
-sys.path.append('/var/local/rainmap/celeryd')
+sys.path.append('/srv/rainmap/django')
+sys.path.append('/srv/rainmap/django/rainmap')
+sys.path.append('/srv/rainmap/celeryd')
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'rainmap.settings'
 os.environ["CELERY_LOADER"] = 'django'
