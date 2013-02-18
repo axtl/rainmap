@@ -3,7 +3,7 @@
 class setup {
     case $operatingsystem {
         CentOS: {
-            include setup::repos
+            notify("OS check passed")
         }
 
         default: {

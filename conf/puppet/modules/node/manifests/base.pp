@@ -1,5 +1,6 @@
 class node::base {
-    # shared config, like users, goes in here
+    include setup::repos
+    include setup::python
     include setup::files
     include setup::users
 }

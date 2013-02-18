@@ -2,7 +2,6 @@ class supervisord {
 
     package {
         'supervisord':
-            # require => Class['python::virtualenv::supervisord']
             provider => pip,
             ensure => '3.0a12';
     }

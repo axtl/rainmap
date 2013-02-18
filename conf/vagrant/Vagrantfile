@@ -32,12 +32,14 @@ Vagrant::Config.run do |config|
   # an identifier, the second is the path on the guest to mount the
   # folder, and the third is the path on the host to the actual folder.
   # config.vm.share_folder "v-data", "/vagrant_data", "../data"
-  config.vm.share_folder "v-django", "/srv/rainmap/django", "../../src/django"
-  config.vm.share_folder "v-public", "/srv/rainmap/public", "../../src/public"
+  #config.vm.share_folder "v-django", "/srv/rainmap/django", "../../src/django"
+  #config.vm.share_folder "v-public", "/srv/rainmap/public", "../../src/public"
 
   # Enable provisioning with Puppet stand alone.
-  # config.vm.provision :puppet, :module_path => "../puppet/modules/" do |puppet|
-  #   puppet.manifests_path = "../puppet/"
-  #   puppet.manifest_file = "site.pp"
-  # end
+  config.vm.provision :puppet,
+                      # :pp_path = "/tmp/vagrant-puppet",
+                      :module_path => "../puppet/modules/" do |puppet|
+    puppet.manifests_path = "../puppet/"
+    puppet.manifest_file = "site.pp"
+  end
 end

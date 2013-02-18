@@ -20,7 +20,7 @@ class apache {
         'rainmap.conf':
             path => '/etc/httpd/conf.d/rainmap.conf',
             ensure => present,
-            source => 'puppet:///modules/:username.to.idapache/rainmap.conf',
+            source => 'puppet:///modules/apache/rainmap.conf',
             require => File['confd'],
             notify => Service['httpd'];
     }
